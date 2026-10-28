@@ -38,7 +38,7 @@
         <p class="page-description">브랜치와 작업 폴더의 차이를 이해하고, 여러 에이전트가 수정할 공간을 나눕니다.</p>
         <div class="article-meta"><span>1:00–4:00</span><span>수정 <time datetime="2026-10-29">2026-10-29</time></span></div>
       </header>
-      <details class="inline-toc"><summary>이 페이지의 목차</summary><nav aria-label="본문 소목차"><ul class="toc-list"><li class="toc-level-2"><a href="#branch-worktree-clone">브랜치와 작업 폴더를 구분하기</a></li><li class="toc-level-2"><a href="#shared-repository-separate-workspaces">이력은 공유하고 작업 공간은 나누기</a></li><li class="toc-level-2"><a href="#create-worktrees">세 줄로 작업 공간 만들기</a></li><li class="toc-level-2"><a href="#limits-of-separation">분리한 뒤에도 필요한 일</a></li><li class="toc-level-3"><a href="#presenter-worktree-guidance">3분 안에 설명하기</a></li><li class="toc-level-3"><a href="#worktree-follow-up">질문이 나왔을 때 덧붙이기</a></li></ul></nav></details>
+      <details class="inline-toc"><summary>이 페이지의 목차</summary><nav aria-label="본문 소목차"><ul class="toc-list"><li class="toc-level-2"><a href="#branch-worktree-clone">브랜치와 작업 폴더를 구분하기</a></li><li class="toc-level-2"><a href="#shared-repository-separate-workspaces">이력은 공유하고 작업 공간은 나누기</a></li><li class="toc-level-2"><a href="#create-worktrees">세 줄로 작업 공간 만들기</a></li><li class="toc-level-2"><a href="#limits-of-separation">분리한 뒤에도 필요한 일</a></li></ul></nav></details>
       <article class="article-content"><p class="lead">Git worktree는 한 저장소에 작업 폴더를 추가하는 기능입니다. 각 폴더에서 서로 다른 브랜치를 열어 두면, 진행 중인 작업을 그대로 둔 채 다른 작업을 시작할 수 있습니다. 여러 에이전트에게 파일 수정을 맡길 때도 각자의 작업 공간을 정하는 데 도움이 됩니다.</p>
 
 <h2 id="branch-worktree-clone">브랜치와 작업 폴더를 구분하기</h2>
@@ -97,22 +97,13 @@ git worktree list</code></pre>
   <li><strong>접근 권한:</strong> Worktree 자체는 에이전트의 파일 접근 권한을 제한하지 않습니다. 같은 사용자 권한으로 실행된다면 다른 폴더에 접근할 수 있습니다. 접근 제한이 필요하면 실행 도구의 sandbox나 운영체제 권한 등 별도의 장치를 사용합니다.</li>
 </ul>
 <p>이렇게 작업 공간을 마련했다면, 다음 단계는 담당자와 의존 관계를 정하는 것입니다. 누가 무엇을 맡고, 어떤 결과를 기다리며, 완료를 어떻게 확인할지 연결하는 절차가 오케스트레이션입니다.</p>
-
-<details class="speaker-notes">
-  <summary>발표자 메모와 보충 설명</summary>
-  <h3 id="presenter-worktree-guidance">3분 안에 설명하기</h3>
-  <p>개념 비교 40초, 그림과 공유·분리 표 1분, 명령 40초, 주의점과 다음 장 연결 40초를 배정합니다. Git 내부 경로보다 “작업 파일은 따로, 이력은 함께”라는 관계를 설명하세요. 명령을 실행하는 시연은 선택 사항이며, 본문은 실제 업무 성과나 실사용 사례를 가정하지 않습니다.</p>
-  <h3 id="worktree-follow-up">질문이 나왔을 때 덧붙이기</h3>
-  <p>Worktree 하나에 에이전트 하나를 반드시 배치해야 하는 것은 아닙니다. 같은 폴더에서 협업한다면 수정 책임을 더 명확히 정해야 합니다. 서로 독립적으로 변경할 수 있는 작업일수록 공간을 나누는 방식이 이해하기 쉽습니다. 단순한 오타 수정처럼 작은 일은 폴더를 추가로 만드는 비용까지 고려해서 선택하세요.</p>
-  <p>작업이 끝나면 변경을 보존했는지 확인하고 <code>git worktree remove</code>로 작업 폴더를 정리합니다. 브랜치 삭제는 별도입니다. Submodule을 사용하는 프로젝트라면 공식 worktree 문서의 지원 제약도 확인하세요.</p>
-</details>
 </article>
       <nav class="page-navigation" aria-label="이전과 다음 장"><a class="page-prev" href="why-orca.html"><span>이전 장</span><strong>← 다섯 가지 사용 이유</strong></a><a class="page-next" href="orchestration.html"><span>다음 장</span><strong>스킬과 오케스트레이션 →</strong></a></nav>
-      <footer class="article-footer">Why Orca · 내가 Orca를 사용하는 이유<span>사내 LLM API + OpenCode 환경을 위한 팀 밋업 강의노트</span></footer>
+      <footer class="article-footer">Why Orca · 내가 Orca를 사용하는 이유<span>OpenCode와 Orca를 함께 사용하는 팀 밋업 강의노트</span></footer>
     </main>
     <aside class="page-toc" aria-label="이 페이지에서">
       <p class="nav-label">이 페이지에서</p>
-      <nav><ul class="toc-list"><li class="toc-level-2"><a href="#branch-worktree-clone">브랜치와 작업 폴더를 구분하기</a></li><li class="toc-level-2"><a href="#shared-repository-separate-workspaces">이력은 공유하고 작업 공간은 나누기</a></li><li class="toc-level-2"><a href="#create-worktrees">세 줄로 작업 공간 만들기</a></li><li class="toc-level-2"><a href="#limits-of-separation">분리한 뒤에도 필요한 일</a></li><li class="toc-level-3"><a href="#presenter-worktree-guidance">3분 안에 설명하기</a></li><li class="toc-level-3"><a href="#worktree-follow-up">질문이 나왔을 때 덧붙이기</a></li></ul></nav>
+      <nav><ul class="toc-list"><li class="toc-level-2"><a href="#branch-worktree-clone">브랜치와 작업 폴더를 구분하기</a></li><li class="toc-level-2"><a href="#shared-repository-separate-workspaces">이력은 공유하고 작업 공간은 나누기</a></li><li class="toc-level-2"><a href="#create-worktrees">세 줄로 작업 공간 만들기</a></li><li class="toc-level-2"><a href="#limits-of-separation">분리한 뒤에도 필요한 일</a></li></ul></nav>
     </aside>
   </div>
   <dialog id="search-dialog" aria-labelledby="search-title">

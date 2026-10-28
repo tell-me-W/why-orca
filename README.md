@@ -1,6 +1,6 @@
 # 내가 Orca를 사용하는 이유
 
-사내 LLM API + OpenCode 환경에서 Orca를 사용하는 다섯 가지 이유를 설명하는 **20분 팀 밋업 강의노트**입니다. 공식 문서로 확인한 기능과 사내 환경에서 직접 확인할 조건을 함께 설명합니다.
+OpenCode 환경에서 Orca를 사용하는 다섯 가지 이유를 설명하는 **20분 팀 밋업 강의노트**입니다. 공식 문서로 확인한 기능과 사내 환경에서 직접 확인할 조건을 함께 설명합니다.
 
 - 강의 사이트: [Why Orca](https://tell-me-W.github.io/why-orca/)
 - 저장소: [tell-me-W/why-orca](https://github.com/tell-me-W/why-orca)
@@ -15,7 +15,7 @@
 | 페이지 | 내용 | 발표 구간 |
 | --- | --- | --- |
 | 강의 안내 | 표지, 목표, 읽는 순서 | 시작 화면 |
-| 다섯 가지 사용 이유 | 사내 API · OpenCode · Orca 역할 | 0:00–1:00 |
+| 다섯 가지 사용 이유 | OpenCode와 Orca의 활용 | 0:00–1:00 |
 | Git worktree 이해 | 작업 공간 분리와 공유 이력 | 1:00–4:00 |
 | 스킬과 오케스트레이션 | 병렬 배정, 의존 관계, 완료 보고 | 4:00–7:00 |
 | 터미널과 상태 추적 | 완료·응답 대기·중단 상태 확인 | 7:00–9:00 |
@@ -81,7 +81,6 @@ node scripts/serve.mjs --port 4174 --base /why-orca/
 - 제목·순서·시간: `site.json`
 - 실사용 사례: `content/examples.html`
 - 팩트체크·출처: `content/references.html`
-- 발표자 메모: 각 본문의 `details.speaker-notes`
 - 소목차: 고유한 영문 `id`가 있는 `h2`·`h3`에서 자동 생성
 - 이미지: `assets/images/`에 저장한 뒤 `assets/images/파일명`으로 참조
 
@@ -115,6 +114,5 @@ git push origin main
 
 - [Orca 공식 문서](https://www.onorca.dev/docs)
 - [Orca 공식 저장소](https://github.com/stablyai/orca)
-- [OpenCode providers](https://opencode.ai/docs/providers/)
 - [Git worktree](https://git-scm.com/docs/git-worktree)
 - [주장별 확인 결과와 전체 출처](content/references.html)
