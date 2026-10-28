@@ -23,20 +23,11 @@ OpenCode 환경에서 Orca를 사용하는 다섯 가지 이유를 설명하는 
 | 세션 복구와 이력 | 복원·재시작·대화 재개 구분 | 11:00–12:00 |
 | 브라우저와 Design Mode | 요소 선택과 UI 수정·검증 | 12:00–14:00 |
 | 실사용 사례 | 발표자가 직접 작성 | 14:00–18:00 |
-| 정리와 팩트체크 | 15개 주장 검증, 출처, Q&A | 18:00–20:00 |
-| 부록 · 업무 적용 | 작업 명세와 검토 책임 | 발표 후 읽을거리 |
+| 정리하며 | 핵심 요점, 참고 자료, Q&A | 18:00–20:00 |
 
 설명 14분, 사례 4분, 정리와 질문 2분입니다. 실사용 사례와 성과 수치는 발표자가 작성합니다. 아직 작성하지 않은 사례는 빈 양식으로 남겨 두었습니다.
 
-## 팩트체크에서 구분한 내용
-
-- OpenCode 실행과 상태 연동은 공식 지원 기능입니다. 사내 API·변경판의 모든 조합을 보장하지는 않습니다.
-- 멈춤 대응은 상태와 출력을 보고 조치하는 흐름입니다. 임의의 장애를 자동 진단·복구한다는 주장은 넣지 않았습니다.
-- Session restore는 화면과 출력 기록, 살아 있는 프로세스의 재연결을 다룹니다. Restart와 저장된 대화의 Resume는 별도입니다.
-- Design Mode는 요소 정보를 에이전트에 전달해 소스 수정을 요청합니다. 수정 후 화면과 Diff를 검토합니다.
-- 오케스트레이션은 실험 기능이며 실행 중인 Orca runtime이 필요합니다. 세부 실행 옵션은 설치 버전의 guide를 확인합니다.
-
-각 장의 주장 가까이에 공식 출처를 달았습니다. 전체 판정표는 [팩트체크 페이지](https://tell-me-W.github.io/why-orca/references.html#fact-check)에 있습니다.
+각 장의 설명 가까이에 공식 출처를 달았습니다. 전체 참고 자료는 마지막 장에서 확인할 수 있습니다.
 
 ## 기술과 디렉터리
 
@@ -80,7 +71,7 @@ node scripts/serve.mjs --port 4174 --base /why-orca/
 - 본문: `content/`의 해당 HTML 파일
 - 제목·순서·시간: `site.json`
 - 실사용 사례: `content/examples.html`
-- 팩트체크·출처: `content/references.html`
+- 정리와 참고 자료: `content/references.html`
 - 소목차: 고유한 영문 `id`가 있는 `h2`·`h3`에서 자동 생성
 - 이미지: `assets/images/`에 저장한 뒤 `assets/images/파일명`으로 참조
 
@@ -120,4 +111,4 @@ git push origin main
 - [설치 안내](https://github.com/stablyai/orca/blob/main/docs/site/content/docs/install.mdx)
 - [설치 파일 다운로드](https://github.com/stablyai/orca/releases/latest)
 - [Git worktree](https://git-scm.com/docs/git-worktree)
-- [주장별 확인 결과와 전체 출처](content/references.html)
+- [정리와 참고 자료](https://tell-me-w.github.io/why-orca/references.html#official-sources)
