@@ -1,7 +1,7 @@
 <p>업무에 적용할 때는 에이전트의 수보다 작업의 경계를 먼저 정합니다. 무엇을 맡기고, 어떤 결과를 받으며, 누가 통합할지 정해 두면 완료 보고를 실제 판단으로 연결하기 쉽습니다.</p>
 
 <h2 id="work-specification">작업 명세와 수정 범위</h2>
-<p>작업을 나눌 때는 각 작업이 다른 작업의 미완성 상태 없이도 진행될 수 있는지 확인합니다. 독립적인 작업은 병렬로 진행하고, 앞선 결과가 필요한 작업에는 의존 관계를 둡니다. Orca의 Task는 명세와 의존 관계, 상태를 관리하며, 조정자는 이 정보를 바탕으로 작업을 배정합니다. <a href="https://www.onorca.dev/docs/cli/orchestration">Orca 오케스트레이션</a></p>
+<p>작업을 나눌 때는 각 작업이 다른 작업의 미완성 상태 없이도 진행될 수 있는지 확인합니다. 독립적인 작업은 병렬로 진행하고, 앞선 결과가 필요한 작업에는 의존 관계를 둡니다. Orca의 Task는 명세와 의존 관계, 상태를 관리하며, 조정자는 이 정보를 바탕으로 작업을 배정합니다. <a href="https://github.com/stablyai/orca/blob/main/docs/site/content/docs/cli/orchestration.mdx">Orca 오케스트레이션</a></p>
 <p>작업 요청에는 목적만 적기보다 아래 항목을 함께 전달하는 편이 좋습니다. 수정 범위가 겹친다면 담당자를 정하거나 실행 순서를 조정합니다.</p>
 <pre><code>목표: 어떤 문제를 해결할 것인가
 출발점: 어느 브랜치 또는 커밋을 기준으로 할 것인가
@@ -11,7 +11,7 @@
 질문할 조건: 스스로 결정하기 어려운 범위나 요구사항</code></pre>
 
 <h2 id="completion-and-review">완료 조건과 검토 책임</h2>
-<p>작업자의 완료 보고에는 무엇을 바꾸었고 어떻게 확인했는지 담겨야 합니다. 감독형 오케스트레이션에서는 현재 Task와 Dispatch에 연결된 <code>worker_done</code>으로 성공 또는 실패를 보고합니다. 이 메시지는 해당 실행 시도의 결과를 전달하며, 코드의 최종 채택 여부는 별도의 검토가 필요합니다. <a href="https://www.onorca.dev/docs/cli/orchestration#worker-contract">작업자 보고 규칙</a></p>
+<p>작업자의 완료 보고에는 무엇을 바꾸었고 어떻게 확인했는지 담겨야 합니다. 감독형 오케스트레이션에서는 현재 Task와 Dispatch에 연결된 <code>worker_done</code>으로 성공 또는 실패를 보고합니다. 이 메시지는 해당 실행 시도의 결과를 전달하며, 코드의 최종 채택 여부는 별도의 검토가 필요합니다. <a href="https://github.com/stablyai/orca/blob/main/docs/site/content/docs/cli/orchestration.mdx#worker-contract">작업자 보고 규칙</a></p>
 <table>
   <thead><tr><th scope="col">책임</th><th scope="col">확인할 내용</th></tr></thead>
   <tbody>
@@ -25,4 +25,4 @@
 <h2 id="start-small">작은 작업으로 운영 방식 확인하기</h2>
 <p>처음에는 서로 독립적인 두 작업 정도로 시작해 조정 과정을 관찰해 볼 수 있습니다. 작업별 수정 범위와 완료 조건을 정하고, 결과를 받은 뒤 변경 내역과 검증 근거를 함께 확인합니다. 중간에 사람이 개입한 이유도 기록하면 다음 작업 명세를 개선할 수 있습니다.</p>
 <p>평가할 때는 전체 소요 시간뿐 아니라 검토·재작업에 든 시간, 사용량, 결과 품질을 함께 봅니다. 병렬 처리가 유리했던 부분과 오히려 기다림이 늘어난 부분을 구분해야 다음에 어떤 일을 맡길지 판단할 수 있습니다.</p>
-<p>Worktree는 작업 파일을 나누는 기능입니다. 서버 포트, 외부 데이터베이스, 에이전트의 실행 권한은 별도로 확인해야 합니다. 로컬 설정이나 의존성을 worktree에 어떻게 준비하는지도 팀의 실행 환경에 맞춰 정합니다. <a href="https://www.onorca.dev/docs/model/worktrees#shared-directories-gitignored-files">Orca의 공유 경로와 로컬 파일 처리</a></p>
+<p>Worktree는 작업 파일을 나누는 기능입니다. 서버 포트, 외부 데이터베이스, 에이전트의 실행 권한은 별도로 확인해야 합니다. 로컬 설정이나 의존성을 worktree에 어떻게 준비하는지도 팀의 실행 환경에 맞춰 정합니다. <a href="https://github.com/stablyai/orca/blob/main/docs/site/content/docs/model/worktrees.mdx#shared-directories--gitignored-files">Orca의 공유 경로와 로컬 파일 처리</a></p>

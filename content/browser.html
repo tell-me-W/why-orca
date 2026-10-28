@@ -1,10 +1,10 @@
 <p>화면의 어느 부분을 바꾸고 싶은지 말로 설명하다 보면 DOM을 찾고, 스크린샷을 찍고, 코드 위치를 전달하는 데 시간이 듭니다. Orca에서는 개발 화면을 보면서 수정할 요소를 선택해 에이전트에 전달할 수 있습니다.</p>
 
 <h2 id="browser-workspace">작업하던 화면을 같은 공간에서 확인한다</h2>
-<p>Orca의 내장 브라우저는 Chromium 기반이며 worktree별로 탭을 관리합니다. 작업을 전환하면 해당 worktree의 브라우저 탭과 스크롤 위치로 돌아갈 수 있습니다. 개발자 도구와 화면 크기 에뮬레이션도 제공하므로 수정한 화면을 보거나 반응형 배치를 확인할 때 사용할 수 있습니다. <a class="source-link" href="https://www.onorca.dev/docs/browser/overview">내장 브라우저 공식 문서</a></p>
+<p>Orca의 내장 브라우저는 Chromium 기반이며 worktree별로 탭을 관리합니다. 작업을 전환하면 해당 worktree의 브라우저 탭과 스크롤 위치로 돌아갈 수 있습니다. 개발자 도구와 화면 크기 에뮬레이션도 제공하므로 수정한 화면을 보거나 반응형 배치를 확인할 때 사용할 수 있습니다. <a class="source-link" href="https://github.com/stablyai/orca/blob/main/docs/site/content/docs/browser/overview.mdx">내장 브라우저 공식 문서</a></p>
 
 <h2 id="design-mode">Design Mode로 수정 대상을 가리킨다</h2>
-<p>Design Mode를 켜고 화면 요소를 클릭하면 그 요소의 HTML, 계산된 CSS, 잘라낸 스크린샷을 에이전트에 전달할 수 있습니다. 개발용 source map이 있을 때는 소스 파일과 줄 정보도 포함합니다. 여기에 원하는 변경을 적으면 에이전트가 그 맥락을 받아 소스를 수정합니다. <a class="source-link" href="https://www.onorca.dev/docs/browser/design-mode">Design Mode 공식 문서</a></p>
+<p>Design Mode를 켜고 화면 요소를 클릭하면 그 요소의 HTML, 계산된 CSS, 잘라낸 스크린샷을 에이전트에 전달할 수 있습니다. 개발용 source map이 있을 때는 소스 파일과 줄 정보도 포함합니다. 여기에 원하는 변경을 적으면 에이전트가 그 맥락을 받아 소스를 수정합니다. <a class="source-link" href="https://github.com/stablyai/orca/blob/main/docs/site/content/docs/browser/design-mode.mdx">Design Mode 공식 문서</a></p>
 <figure class="diagram">
   <div class="flow-diagram flow-diagram-branch" aria-label="화면 요소를 선택하고 변경 요청을 전달하면 에이전트가 소스를 수정하고 사람이 결과 화면과 변경 내용을 검증한다">
     <div class="flow-step"><strong>화면 요소 선택</strong><span>어느 부분을 바꿀지 지정</span></div>
@@ -17,10 +17,10 @@
   </div>
   <figcaption>선택한 요소는 수정 요청의 맥락입니다. 최종 결과는 화면과 코드에서 확인합니다.</figcaption>
 </figure>
-<p>여러 요소에 메모를 남겨 모아서 보낼 수도 있습니다. 이 기능의 업무상 가치는 “어느 버튼인지”를 설명하는 수고를 줄이고, 수정 요청과 결과 확인을 같은 작업 공간에서 이어 가는 데 있습니다. <a class="source-link" href="https://www.onorca.dev/docs/browser/design-mode">페이지 주석 모아 보내기</a></p>
+<p>여러 요소에 메모를 남겨 모아서 보낼 수도 있습니다. 이 기능의 업무상 가치는 “어느 버튼인지”를 설명하는 수고를 줄이고, 수정 요청과 결과 확인을 같은 작업 공간에서 이어 가는 데 있습니다. <a class="source-link" href="https://github.com/stablyai/orca/blob/main/docs/site/content/docs/browser/design-mode.mdx">페이지 주석 모아 보내기</a></p>
 
 <h2 id="browser-agent">브라우저를 보며 개발하고 검증한다</h2>
-<p>공식 절차는 요소 선택 → 변경 요청 → 에이전트의 소스 수정 → 화면 재확인입니다. 프로젝트에 hot reload가 구성되어 있으면 변경 후 화면이 갱신됩니다. 그렇지 않으면 필요한 빌드나 새로고침을 직접 진행합니다. Orca CLI를 통한 브라우저 조회와 조작도 지원합니다. <a class="source-link" href="https://www.onorca.dev/docs/recipes/design-mode-fix">UI 수정 절차</a> · <a class="source-link" href="https://www.onorca.dev/docs/browser/overview">브라우저 자동화</a></p>
+<p>공식 절차는 요소 선택 → 변경 요청 → 에이전트의 소스 수정 → 화면 재확인입니다. 프로젝트에 hot reload가 구성되어 있으면 변경 후 화면이 갱신됩니다. 그렇지 않으면 필요한 빌드나 새로고침을 직접 진행합니다. Orca CLI를 통한 브라우저 조회와 조작도 지원합니다. <a class="source-link" href="https://github.com/stablyai/orca/blob/main/docs/site/content/docs/recipes/design-mode-fix.mdx">UI 수정 절차</a> · <a class="source-link" href="https://github.com/stablyai/orca/blob/main/docs/site/content/docs/browser/overview.mdx">브라우저 자동화</a></p>
 
 <h2 id="browser-conditions">사내 환경에서 확인할 범위</h2>
 <p>내장 브라우저와 Design Mode의 존재는 공식 문서로 확인됩니다. 사내 OpenCode와 LLM에서 첨부된 이미지까지 해석하고 요청을 수행하는지는 별도 확인이 필요합니다. 사용하는 모델의 입력 지원과 도구 실행 권한에 따라 결과가 달라질 수 있으므로, 이 강의에서는 <strong>“화면 요소의 맥락을 전달해 수정을 요청하고 검증한다”</strong>고 설명합니다. 공개 문서만으로 사내 구성 전체의 호환성을 보장할 수는 없습니다.</p>

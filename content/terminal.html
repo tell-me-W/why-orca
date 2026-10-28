@@ -1,13 +1,13 @@
 <p>여러 OpenCode 에이전트를 실행하면 각 터미널을 번갈아 열어 진행 상황을 확인해야 합니다. Orca에서는 작업 공간과 터미널, 상태 표시를 함께 보면서 <strong>지금 내가 확인할 작업</strong>을 찾을 수 있습니다. 상태 연동은 실제 OpenCode 실행 환경에서 확인해야 합니다.</p>
 
 <h2 id="terminal-live-state">터미널을 열기 전에 상태부터 보기</h2>
-<p>Orca의 터미널은 탭과 분할 화면으로 배치할 수 있습니다. 에이전트 탭에는 작업 중, 입력 대기, 완료 등의 상태가 표시됩니다. 출력이 궁금한 작업을 선택하면 해당 터미널을 읽을 수 있어, 작업별로 창과 폴더를 다시 찾는 수고를 줄일 수 있습니다. <a class="source-link" href="https://www.onorca.dev/docs/terminal">공식 문서: Terminal</a></p>
-<p>상태는 에이전트가 보내는 신호와 연동 정보를 바탕으로 판단합니다. Orca가 일반 셸로 인식한 터미널에는 에이전트 상태가 나타나지 않을 수 있습니다. 상태 표시는 확인할 대상을 고르는 단서로 사용하고, 실제 결과는 출력과 변경 내역에서 확인합니다. <a class="source-link" href="https://www.onorca.dev/docs/model/agents-sessions">공식 문서: Agents &amp; sessions</a></p>
+<p>Orca의 터미널은 탭과 분할 화면으로 배치할 수 있습니다. 에이전트 탭에는 작업 중, 입력 대기, 완료 등의 상태가 표시됩니다. 출력이 궁금한 작업을 선택하면 해당 터미널을 읽을 수 있어, 작업별로 창과 폴더를 다시 찾는 수고를 줄일 수 있습니다. <a class="source-link" href="https://github.com/stablyai/orca/blob/main/docs/site/content/docs/terminal.mdx">공식 문서: Terminal</a></p>
+<p>상태는 에이전트가 보내는 신호와 연동 정보를 바탕으로 판단합니다. Orca가 일반 셸로 인식한 터미널에는 에이전트 상태가 나타나지 않을 수 있습니다. 상태 표시는 확인할 대상을 고르는 단서로 사용하고, 실제 결과는 출력과 변경 내역에서 확인합니다. <a class="source-link" href="https://github.com/stablyai/orca/blob/main/docs/site/content/docs/model/agents-sessions.mdx">공식 문서: Agents &amp; sessions</a></p>
 
 <h2 id="terminal-notifications">완료와 응답 대기를 모아서 확인하기</h2>
-<p>터미널 에이전트의 작업 중 상태가 idle로 바뀌면 Orca는 완료 알림을 제공하며, 알림에서 해당 작업 공간으로 이동할 수 있습니다. 알림 방식은 설정과 세션 종류에 따라 다릅니다. 일부 structured chat은 소리나 시스템 알림 대신 읽지 않음 표시를 사용합니다. <a class="source-link" href="https://www.onorca.dev/docs/notifications">공식 문서: Notifications &amp; Inbox</a></p>
-<p>Agents feed에서는 여러 작업 공간의 완료, 질문, 입력 대기와 최근 응답을 모아 볼 수 있습니다. 업무에서는 이 화면을 보고 먼저 답할 질문과 다음에 검토할 결과의 순서를 정할 수 있습니다. 에이전트가 멈춰 보일 때도 출력과 대기 이유를 살펴보는 출발점이 됩니다. <a class="source-link" href="https://www.onorca.dev/docs/activity">공식 문서: Agents feed</a></p>
+<p>터미널 에이전트의 작업 중 상태가 idle로 바뀌면 Orca는 완료 알림을 제공하며, 알림에서 해당 작업 공간으로 이동할 수 있습니다. 알림 방식은 설정과 세션 종류에 따라 다릅니다. 일부 structured chat은 소리나 시스템 알림 대신 읽지 않음 표시를 사용합니다. <a class="source-link" href="https://github.com/stablyai/orca/blob/main/docs/site/content/docs/notifications.mdx">공식 문서: Notifications &amp; Inbox</a></p>
+<p>Agents feed에서는 여러 작업 공간의 완료, 질문, 입력 대기와 최근 응답을 모아 볼 수 있습니다. 업무에서는 이 화면을 보고 먼저 답할 질문과 다음에 검토할 결과의 순서를 정할 수 있습니다. 에이전트가 멈춰 보일 때도 출력과 대기 이유를 살펴보는 출발점이 됩니다. <a class="source-link" href="https://github.com/stablyai/orca/blob/main/docs/site/content/docs/activity.mdx">공식 문서: Agents feed</a></p>
 
 <h2 id="terminal-opencode-check">사내 OpenCode에서는 무엇을 확인할까</h2>
-<p>공식 지원 목록에는 OpenCode의 상태 연동이 명시되어 있습니다. 다만 사내 변경판의 실행 명령, 신호, 설정까지 검증됐다는 뜻은 아닙니다. 팀 환경에서는 작업 시작, 입력 요청, 작업 완료, 프로세스 종료가 화면에 어떻게 나타나는지 확인해 두면 좋습니다. <a class="source-link" href="https://www.onorca.dev/docs/agents/supported">공식 문서: Supported agents</a></p>
+<p>공식 지원 목록에는 OpenCode의 상태 연동이 명시되어 있습니다. 다만 사내 변경판의 실행 명령, 신호, 설정까지 검증됐다는 뜻은 아닙니다. 팀 환경에서는 작업 시작, 입력 요청, 작업 완료, 프로세스 종료가 화면에 어떻게 나타나는지 확인해 두면 좋습니다. <a class="source-link" href="https://github.com/stablyai/orca/blob/main/docs/site/content/docs/agents/supported.mdx">공식 문서: Supported agents</a></p>
 <p><strong>“먹통을 자동으로 해결한다”보다는 “대기하거나 중단된 작업을 살펴보고 대응하기 편하다”가 정확한 설명입니다.</strong> 무응답의 원인이 모델 응답 지연인지, 입력 대기인지, 프로세스 문제인지는 터미널과 실행 환경을 함께 확인해야 합니다. 빠른 대응이라는 효과는 발표자의 실제 사례에서 보여줍니다.</p>

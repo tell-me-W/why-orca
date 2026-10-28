@@ -112,7 +112,12 @@ git push origin main
 
 ## 주요 공식 자료
 
-- [Orca 공식 문서](https://www.onorca.dev/docs)
+사내에서 접근할 수 있도록 Orca 관련 링크는 공식 GitHub 저장소의 문서 원본을 사용합니다.
+
+- [Orca 소개](https://github.com/stablyai/orca/blob/main/docs/site/content/docs/index.mdx)
+- [전체 공식 문서 목록](https://github.com/stablyai/orca/tree/main/docs/site/content/docs)
 - [Orca 공식 저장소](https://github.com/stablyai/orca)
+- [설치 안내](https://github.com/stablyai/orca/blob/main/docs/site/content/docs/install.mdx)
+- [설치 파일 다운로드](https://github.com/stablyai/orca/releases/latest)
 - [Git worktree](https://git-scm.com/docs/git-worktree)
 - [주장별 확인 결과와 전체 출처](content/references.html)
