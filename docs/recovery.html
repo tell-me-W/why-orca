@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="작업 환경 복원, 프로세스 재시작, 저장된 대화 재개의 차이를 알아봅니다.">
+  <meta name="color-scheme" content="light dark">
+  <title>중단된 작업을 다시 이어가기 · Why Orca</title>
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem('orca-notes-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){document.documentElement.dataset.theme='light'}</script>
+  <link rel="stylesheet" href="assets/site.css">
+  <noscript><style>@media(max-width:760px){.book-sidebar{display:block;position:static;height:auto;padding:20px 0;border-bottom:1px solid var(--line)}.sidebar-foot{display:none}}</style></noscript>
+  <script src="assets/search-index.js" defer></script>
+  <script src="assets/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html" aria-label="Why Orca 강의노트 처음으로"><strong>Why Orca</strong><span>강의노트</span></a>
+      <div class="header-actions">
+        <button class="search-trigger" type="button" data-search-open hidden><span>강의 검색</span><kbd>Ctrl K</kbd></button>
+        <button class="text-button theme-toggle" type="button" aria-label="어두운 테마로 전환" hidden>어둡게</button>
+        <button class="text-button print-button" type="button" hidden>인쇄</button>
+        <button class="text-button mobile-menu-trigger" type="button" aria-haspopup="dialog" aria-controls="menu-dialog" hidden>목차</button>
+      </div>
+    </div>
+  </header>
+  <div class="book-layout">
+    <aside class="book-sidebar" aria-label="전체 강의 목차">
+      <p class="nav-label">강의 목차</p>
+      <nav><ol class="book-nav"><li><a href="index.html"><span class="nav-number"></span><span>강의 안내</span></a></li><li><a href="why-orca.html"><span class="nav-number">1</span><span>다섯 가지 사용 이유</span></a></li><li><a href="worktree.html"><span class="nav-number">2</span><span>Git worktree 이해</span></a></li><li><a href="orchestration.html"><span class="nav-number">3</span><span>스킬과 오케스트레이션</span></a></li><li><a href="terminal.html"><span class="nav-number">4</span><span>터미널과 상태 추적</span></a></li><li><a href="review.html"><span class="nav-number">5</span><span>Diff 검토와 피드백</span></a></li><li><a href="recovery.html" aria-current="page"><span class="nav-number">6</span><span>세션 복구와 이력</span></a></li><li><a href="browser.html"><span class="nav-number">7</span><span>브라우저와 Design Mode</span></a></li><li><a href="examples.html"><span class="nav-number">8</span><span>실사용 사례</span></a></li><li><a href="references.html"><span class="nav-number">9</span><span>정리와 팩트체크</span></a></li><li><a href="workflow.html"><span class="nav-number">10</span><span>부록 · 업무 적용</span></a></li></ol></nav>
+      <div class="sidebar-foot"><span>팀 밋업 · 20분</span><a href="references.html#official-sources">공식 참고 자료</a><a href="https://github.com/tell-me-W/why-orca">GitHub 저장소</a></div>
+    </aside>
+    <main id="main" tabindex="-1">
+      <header class="article-header">
+        <p class="chapter-label">이유 4 · 작업의 연속성</p>
+        <h1>중단된 작업을 다시 이어가기</h1>
+        <p class="page-description">작업 환경 복원, 프로세스 재시작, 저장된 대화 재개의 차이를 알아봅니다.</p>
+        <div class="article-meta"><span>11:00–12:00</span><span>수정 <time datetime="2026-10-29">2026-10-29</time></span></div>
+      </header>
+      <details class="inline-toc"><summary>이 페이지의 목차</summary><nav aria-label="본문 소목차"><ul class="toc-list"><li class="toc-level-2"><a href="#recovery-workspace">작업 화면과 실행 중인 프로세스</a></li><li class="toc-level-2"><a href="#recovery-restart">종료된 에이전트를 다시 실행하기</a></li><li class="toc-level-2"><a href="#recovery-history">저장된 대화를 찾고 이어가기</a></li></ul></nav></details>
+      <article class="article-content"><p>여러 작업을 오가다 보면 다시 시작할 때 어느 브랜치와 터미널에서 무엇을 했는지 찾는 데 시간이 듭니다. Orca는 작업 화면을 복원하고, 종료된 에이전트를 다시 실행하며, 저장된 세션을 찾아 재개하는 기능을 제공합니다. <strong>화면 복원, 프로세스 재시작, 대화 재개를 나누어 이해하면</strong> 무엇을 이어갈 수 있는지 정확히 판단할 수 있습니다.</p>
+
+<h2 id="recovery-workspace">작업 화면과 실행 중인 프로세스</h2>
+<p>Orca를 다시 열면 열어둔 worktree, 탭과 분할 배치, 터미널 출력 기록, 선택했던 화면이 복원됩니다. 앱을 닫은 동안 백그라운드 데몬이 살아 있었다면 에이전트는 계속 실행되고, 다음 실행에서 같은 프로세스에 다시 연결합니다. <a class="source-link" href="https://www.onorca.dev/docs/model/session-restore">공식 문서: Session restore</a></p>
+<p>컴퓨터 재부팅이나 데몬 장애로 프로세스가 종료됐다면 상황이 다릅니다. 작업 화면과 마지막으로 저장된 출력은 복원돼도 에이전트 프로세스는 다시 실행해야 합니다. 따라서 “Orca를 다시 켜면 언제나 모든 작업이 중단 없이 이어진다”라고 설명해서는 안 됩니다. <a class="source-link" href="https://www.onorca.dev/docs/model/session-restore">공식 문서: 복원되지 않는 것</a></p>
+
+<h2 id="recovery-restart">종료된 에이전트를 다시 실행하기</h2>
+<p>Orca가 인식한 에이전트 프로세스가 종료되면 탭에 Restart 기능이 나타납니다. 이를 사용하면 같은 작업 디렉터리에서 해당 에이전트를 다시 실행할 수 있습니다. 작업 폴더와 실행 대상을 다시 찾는 단계를 줄여 주는 기능입니다. <a class="source-link" href="https://www.onorca.dev/docs/model/agents-sessions">공식 문서: Restart chip</a></p>
+<p>같은 디렉터리에서 프로세스를 시작하는 것만으로 이전 대화의 모든 맥락이 복원된다고 볼 수는 없습니다. 대화를 계속하려면 저장된 세션이 있는지, 해당 에이전트가 그 세션을 재개할 수 있는지 따로 확인합니다. 사내 OpenCode가 종료된 상황도 이 두 단계를 구분해 설명합니다.</p>
+
+<h2 id="recovery-history">저장된 대화를 찾고 이어가기</h2>
+<p>Agent Session History는 지원되는 에이전트가 디스크에 남긴 세션을 읽습니다. 제목, 작업 디렉터리, 브랜치, 모델과 대화 미리보기로 기록을 찾고, 지원되는 세션의 Resume를 통해 재개 명령을 실행할 수 있습니다. OpenCode도 검색 대상이며, 공식 문서는 기존 세션 파일과 <code>opencode.db</code>를 읽는다고 안내합니다. <a class="source-link" href="https://www.onorca.dev/docs/agents/session-history">공식 문서: Agent session history</a></p>
+<p>업무에서는 이전 요청과 답변을 다시 읽고, 현재 코드 상태를 확인한 뒤 후속 작업을 시작하는 데 활용합니다. 사내 변경판이 기록 경로나 형식을 바꿨다면 검색과 재개가 되는지 확인해야 합니다. 세션 검색, 전체 대화 안 검색, 재개 가능 여부도 각각의 지원 조건을 확인합니다. 복원 성공만으로 이전 맥락의 완전한 보존을 보장하지 않습니다.</p>
+
+<details class="speaker-notes">
+  <summary>발표자 메모 · 1분</summary>
+  <p>시간이 짧으므로 화면은 Restore, 프로세스는 Restart, 저장된 대화는 Resume라는 세 가지 구분만 짚습니다. 앱 재실행과 컴퓨터 재부팅의 차이를 덧붙이고, 사내 환경에서 실제로 이어진 범위는 사례 시간에 보여줍니다.</p>
+</details>
+</article>
+      <nav class="page-navigation" aria-label="이전과 다음 장"><a class="page-prev" href="review.html"><span>이전 장</span><strong>← Diff 검토와 피드백</strong></a><a class="page-next" href="browser.html"><span>다음 장</span><strong>브라우저와 Design Mode →</strong></a></nav>
+      <footer class="article-footer">Why Orca · 내가 Orca를 사용하는 이유<span>사내 LLM API + OpenCode 환경을 위한 팀 밋업 강의노트</span></footer>
+    </main>
+    <aside class="page-toc" aria-label="이 페이지에서">
+      <p class="nav-label">이 페이지에서</p>
+      <nav><ul class="toc-list"><li class="toc-level-2"><a href="#recovery-workspace">작업 화면과 실행 중인 프로세스</a></li><li class="toc-level-2"><a href="#recovery-restart">종료된 에이전트를 다시 실행하기</a></li><li class="toc-level-2"><a href="#recovery-history">저장된 대화를 찾고 이어가기</a></li></ul></nav>
+    </aside>
+  </div>
+  <dialog id="search-dialog" aria-labelledby="search-title">
+    <div class="dialog-header"><h2 id="search-title">강의 검색</h2><button class="text-button" type="button" data-dialog-close>닫기 <kbd>Esc</kbd></button></div>
+    <label class="sr-only" for="search-input">검색어</label>
+    <input id="search-input" type="search" placeholder="예: worktree, 완료 조건, 스킬" autocomplete="off" spellcheck="false">
+    <p id="search-status" role="status" aria-live="polite">제목과 본문에서 검색합니다.</p>
+    <ul id="search-results"></ul>
+  </dialog>
+  <dialog id="menu-dialog" aria-labelledby="menu-title">
+    <div class="dialog-header"><h2 id="menu-title">강의 목차</h2><button class="text-button" type="button" data-dialog-close>닫기</button></div>
+    <nav><ol class="book-nav"><li><a href="index.html"><span class="nav-number"></span><span>강의 안내</span></a></li><li><a href="why-orca.html"><span class="nav-number">1</span><span>다섯 가지 사용 이유</span></a></li><li><a href="worktree.html"><span class="nav-number">2</span><span>Git worktree 이해</span></a></li><li><a href="orchestration.html"><span class="nav-number">3</span><span>스킬과 오케스트레이션</span></a></li><li><a href="terminal.html"><span class="nav-number">4</span><span>터미널과 상태 추적</span></a></li><li><a href="review.html"><span class="nav-number">5</span><span>Diff 검토와 피드백</span></a></li><li><a href="recovery.html" aria-current="page"><span class="nav-number">6</span><span>세션 복구와 이력</span></a></li><li><a href="browser.html"><span class="nav-number">7</span><span>브라우저와 Design Mode</span></a></li><li><a href="examples.html"><span class="nav-number">8</span><span>실사용 사례</span></a></li><li><a href="references.html"><span class="nav-number">9</span><span>정리와 팩트체크</span></a></li><li><a href="workflow.html"><span class="nav-number">10</span><span>부록 · 업무 적용</span></a></li></ol></nav>
+  </dialog>
+  <noscript><div class="noscript-note">검색과 테마 전환은 JavaScript를 사용합니다. 강의 본문과 목차 링크는 그대로 읽을 수 있습니다.</div></noscript>
+</body>
+</html>

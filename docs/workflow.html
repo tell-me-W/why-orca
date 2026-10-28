@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="작업 명세, 완료 조건, 검토 책임과 사내 실행 환경의 확인 항목을 정리합니다.">
+  <meta name="color-scheme" content="light dark">
+  <title>업무에 적용하기 · Why Orca</title>
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem('orca-notes-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){document.documentElement.dataset.theme='light'}</script>
+  <link rel="stylesheet" href="assets/site.css">
+  <noscript><style>@media(max-width:760px){.book-sidebar{display:block;position:static;height:auto;padding:20px 0;border-bottom:1px solid var(--line)}.sidebar-foot{display:none}}</style></noscript>
+  <script src="assets/search-index.js" defer></script>
+  <script src="assets/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html" aria-label="Why Orca 강의노트 처음으로"><strong>Why Orca</strong><span>강의노트</span></a>
+      <div class="header-actions">
+        <button class="search-trigger" type="button" data-search-open hidden><span>강의 검색</span><kbd>Ctrl K</kbd></button>
+        <button class="text-button theme-toggle" type="button" aria-label="어두운 테마로 전환" hidden>어둡게</button>
+        <button class="text-button print-button" type="button" hidden>인쇄</button>
+        <button class="text-button mobile-menu-trigger" type="button" aria-haspopup="dialog" aria-controls="menu-dialog" hidden>목차</button>
+      </div>
+    </div>
+  </header>
+  <div class="book-layout">
+    <aside class="book-sidebar" aria-label="전체 강의 목차">
+      <p class="nav-label">강의 목차</p>
+      <nav><ol class="book-nav"><li><a href="index.html"><span class="nav-number"></span><span>강의 안내</span></a></li><li><a href="why-orca.html"><span class="nav-number">1</span><span>다섯 가지 사용 이유</span></a></li><li><a href="worktree.html"><span class="nav-number">2</span><span>Git worktree 이해</span></a></li><li><a href="orchestration.html"><span class="nav-number">3</span><span>스킬과 오케스트레이션</span></a></li><li><a href="terminal.html"><span class="nav-number">4</span><span>터미널과 상태 추적</span></a></li><li><a href="review.html"><span class="nav-number">5</span><span>Diff 검토와 피드백</span></a></li><li><a href="recovery.html"><span class="nav-number">6</span><span>세션 복구와 이력</span></a></li><li><a href="browser.html"><span class="nav-number">7</span><span>브라우저와 Design Mode</span></a></li><li><a href="examples.html"><span class="nav-number">8</span><span>실사용 사례</span></a></li><li><a href="references.html"><span class="nav-number">9</span><span>정리와 팩트체크</span></a></li><li><a href="workflow.html" aria-current="page"><span class="nav-number">10</span><span>부록 · 업무 적용</span></a></li></ol></nav>
+      <div class="sidebar-foot"><span>팀 밋업 · 20분</span><a href="references.html#official-sources">공식 참고 자료</a><a href="https://github.com/tell-me-W/why-orca">GitHub 저장소</a></div>
+    </aside>
+    <main id="main" tabindex="-1">
+      <header class="article-header">
+        <p class="chapter-label">발표 후 읽을거리</p>
+        <h1>업무에 적용하기</h1>
+        <p class="page-description">작업 명세, 완료 조건, 검토 책임과 사내 실행 환경의 확인 항목을 정리합니다.</p>
+        <div class="article-meta"><span>시간 배정 없음</span><span>수정 <time datetime="2026-10-29">2026-10-29</time></span></div>
+      </header>
+      <details class="inline-toc"><summary>이 페이지의 목차</summary><nav aria-label="본문 소목차"><ul class="toc-list"><li class="toc-level-2"><a href="#work-specification">작업 명세와 수정 범위</a></li><li class="toc-level-2"><a href="#completion-and-review">완료 조건과 검토 책임</a></li><li class="toc-level-2"><a href="#start-small">작은 작업으로 운영 방식 확인하기</a></li></ul></nav></details>
+      <article class="article-content"><p>업무에 적용할 때는 에이전트의 수보다 작업의 경계를 먼저 정합니다. 무엇을 맡기고, 어떤 결과를 받으며, 누가 통합할지 정해 두면 완료 보고를 실제 판단으로 연결하기 쉽습니다.</p>
+
+<h2 id="work-specification">작업 명세와 수정 범위</h2>
+<p>작업을 나눌 때는 각 작업이 다른 작업의 미완성 상태 없이도 진행될 수 있는지 확인합니다. 독립적인 작업은 병렬로 진행하고, 앞선 결과가 필요한 작업에는 의존 관계를 둡니다. Orca의 Task는 명세와 의존 관계, 상태를 관리하며, 조정자는 이 정보를 바탕으로 작업을 배정합니다. <a href="https://www.onorca.dev/docs/cli/orchestration">Orca 오케스트레이션</a></p>
+<p>작업 요청에는 목적만 적기보다 아래 항목을 함께 전달하는 편이 좋습니다. 수정 범위가 겹친다면 담당자를 정하거나 실행 순서를 조정합니다.</p>
+<pre><code>목표: 어떤 문제를 해결할 것인가
+출발점: 어느 브랜치 또는 커밋을 기준으로 할 것인가
+범위: 수정할 파일과 이번 작업에서 제외할 내용
+완료 조건: 충족해야 할 동작과 확인 방법
+보고 내용: 변경 요약, 검증 결과, 남은 문제
+질문할 조건: 스스로 결정하기 어려운 범위나 요구사항</code></pre>
+
+<h2 id="completion-and-review">완료 조건과 검토 책임</h2>
+<p>작업자의 완료 보고에는 무엇을 바꾸었고 어떻게 확인했는지 담겨야 합니다. 감독형 오케스트레이션에서는 현재 Task와 Dispatch에 연결된 <code>worker_done</code>으로 성공 또는 실패를 보고합니다. 이 메시지는 해당 실행 시도의 결과를 전달하며, 코드의 최종 채택 여부는 별도의 검토가 필요합니다. <a href="https://www.onorca.dev/docs/cli/orchestration#worker-contract">작업자 보고 규칙</a></p>
+<table>
+  <thead><tr><th scope="col">책임</th><th scope="col">확인할 내용</th></tr></thead>
+  <tbody>
+    <tr><td>작업 수행</td><td>약속한 범위 안에서 수정하고 검증 결과와 남은 문제를 보고합니다.</td></tr>
+    <tr><td>작업 조정</td><td>의존 관계와 질문을 확인하고, 다음 작업에 필요한 결과를 전달합니다.</td></tr>
+    <tr><td>검토와 통합</td><td>변경 내역과 요구사항을 비교하고, 결과를 합친 상태에서도 필요한 검증을 수행합니다.</td></tr>
+  </tbody>
+</table>
+<p>한 사람이 여러 역할을 맡을 수 있지만, 마지막 검토와 통합을 누가 맡는지는 분명해야 합니다. 각 worktree에서 통과한 테스트만으로 통합 결과까지 확인했다고 볼 수는 없습니다.</p>
+
+<h2 id="start-small">작은 작업으로 운영 방식 확인하기</h2>
+<p>처음에는 서로 독립적인 두 작업 정도로 시작해 조정 과정을 관찰해 볼 수 있습니다. 작업별 수정 범위와 완료 조건을 정하고, 결과를 받은 뒤 변경 내역과 검증 근거를 함께 확인합니다. 중간에 사람이 개입한 이유도 기록하면 다음 작업 명세를 개선할 수 있습니다.</p>
+<p>평가할 때는 전체 소요 시간뿐 아니라 검토·재작업에 든 시간, 사용량, 결과 품질을 함께 봅니다. 병렬 처리가 유리했던 부분과 오히려 기다림이 늘어난 부분을 구분해야 다음에 어떤 일을 맡길지 판단할 수 있습니다.</p>
+<p>Worktree는 작업 파일을 나누는 기능입니다. 서버 포트, 외부 데이터베이스, 에이전트의 실행 권한은 별도로 확인해야 합니다. 로컬 설정이나 의존성을 worktree에 어떻게 준비하는지도 팀의 실행 환경에 맞춰 정합니다. <a href="https://www.onorca.dev/docs/model/worktrees#shared-directories-gitignored-files">Orca의 공유 경로와 로컬 파일 처리</a></p>
+
+<details class="speaker-notes">
+  <summary>발표자 메모</summary>
+  <p>이 부록은 20분 발표에 별도 시간을 배정하지 않습니다. 질문이 나오면 작업 경계, 완료 조건, 최종 검토 책임을 설명하는 보충 자료로 사용합니다.</p>
+</details>
+</article>
+      <nav class="page-navigation" aria-label="이전과 다음 장"><a class="page-prev" href="references.html"><span>이전 장</span><strong>← 정리와 팩트체크</strong></a><a class="page-next" href="index.html"><span>처음으로</span><strong>강의 안내 →</strong></a></nav>
+      <footer class="article-footer">Why Orca · 내가 Orca를 사용하는 이유<span>사내 LLM API + OpenCode 환경을 위한 팀 밋업 강의노트</span></footer>
+    </main>
+    <aside class="page-toc" aria-label="이 페이지에서">
+      <p class="nav-label">이 페이지에서</p>
+      <nav><ul class="toc-list"><li class="toc-level-2"><a href="#work-specification">작업 명세와 수정 범위</a></li><li class="toc-level-2"><a href="#completion-and-review">완료 조건과 검토 책임</a></li><li class="toc-level-2"><a href="#start-small">작은 작업으로 운영 방식 확인하기</a></li></ul></nav>
+    </aside>
+  </div>
+  <dialog id="search-dialog" aria-labelledby="search-title">
+    <div class="dialog-header"><h2 id="search-title">강의 검색</h2><button class="text-button" type="button" data-dialog-close>닫기 <kbd>Esc</kbd></button></div>
+    <label class="sr-only" for="search-input">검색어</label>
+    <input id="search-input" type="search" placeholder="예: worktree, 완료 조건, 스킬" autocomplete="off" spellcheck="false">
+    <p id="search-status" role="status" aria-live="polite">제목과 본문에서 검색합니다.</p>
+    <ul id="search-results"></ul>
+  </dialog>
+  <dialog id="menu-dialog" aria-labelledby="menu-title">
+    <div class="dialog-header"><h2 id="menu-title">강의 목차</h2><button class="text-button" type="button" data-dialog-close>닫기</button></div>
+    <nav><ol class="book-nav"><li><a href="index.html"><span class="nav-number"></span><span>강의 안내</span></a></li><li><a href="why-orca.html"><span class="nav-number">1</span><span>다섯 가지 사용 이유</span></a></li><li><a href="worktree.html"><span class="nav-number">2</span><span>Git worktree 이해</span></a></li><li><a href="orchestration.html"><span class="nav-number">3</span><span>스킬과 오케스트레이션</span></a></li><li><a href="terminal.html"><span class="nav-number">4</span><span>터미널과 상태 추적</span></a></li><li><a href="review.html"><span class="nav-number">5</span><span>Diff 검토와 피드백</span></a></li><li><a href="recovery.html"><span class="nav-number">6</span><span>세션 복구와 이력</span></a></li><li><a href="browser.html"><span class="nav-number">7</span><span>브라우저와 Design Mode</span></a></li><li><a href="examples.html"><span class="nav-number">8</span><span>실사용 사례</span></a></li><li><a href="references.html"><span class="nav-number">9</span><span>정리와 팩트체크</span></a></li><li><a href="workflow.html" aria-current="page"><span class="nav-number">10</span><span>부록 · 업무 적용</span></a></li></ol></nav>
+  </dialog>
+  <noscript><div class="noscript-note">검색과 테마 전환은 JavaScript를 사용합니다. 강의 본문과 목차 링크는 그대로 읽을 수 있습니다.</div></noscript>
+</body>
+</html>

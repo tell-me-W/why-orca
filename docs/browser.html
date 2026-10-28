@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="내장 브라우저에서 요소를 선택하고, 화면 맥락을 담은 요청으로 UI를 수정합니다.">
+  <meta name="color-scheme" content="light dark">
+  <title>화면을 보면서 UI 수정 요청하기 · Why Orca</title>
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem('orca-notes-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){document.documentElement.dataset.theme='light'}</script>
+  <link rel="stylesheet" href="assets/site.css">
+  <noscript><style>@media(max-width:760px){.book-sidebar{display:block;position:static;height:auto;padding:20px 0;border-bottom:1px solid var(--line)}.sidebar-foot{display:none}}</style></noscript>
+  <script src="assets/search-index.js" defer></script>
+  <script src="assets/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html" aria-label="Why Orca 강의노트 처음으로"><strong>Why Orca</strong><span>강의노트</span></a>
+      <div class="header-actions">
+        <button class="search-trigger" type="button" data-search-open hidden><span>강의 검색</span><kbd>Ctrl K</kbd></button>
+        <button class="text-button theme-toggle" type="button" aria-label="어두운 테마로 전환" hidden>어둡게</button>
+        <button class="text-button print-button" type="button" hidden>인쇄</button>
+        <button class="text-button mobile-menu-trigger" type="button" aria-haspopup="dialog" aria-controls="menu-dialog" hidden>목차</button>
+      </div>
+    </div>
+  </header>
+  <div class="book-layout">
+    <aside class="book-sidebar" aria-label="전체 강의 목차">
+      <p class="nav-label">강의 목차</p>
+      <nav><ol class="book-nav"><li><a href="index.html"><span class="nav-number"></span><span>강의 안내</span></a></li><li><a href="why-orca.html"><span class="nav-number">1</span><span>다섯 가지 사용 이유</span></a></li><li><a href="worktree.html"><span class="nav-number">2</span><span>Git worktree 이해</span></a></li><li><a href="orchestration.html"><span class="nav-number">3</span><span>스킬과 오케스트레이션</span></a></li><li><a href="terminal.html"><span class="nav-number">4</span><span>터미널과 상태 추적</span></a></li><li><a href="review.html"><span class="nav-number">5</span><span>Diff 검토와 피드백</span></a></li><li><a href="recovery.html"><span class="nav-number">6</span><span>세션 복구와 이력</span></a></li><li><a href="browser.html" aria-current="page"><span class="nav-number">7</span><span>브라우저와 Design Mode</span></a></li><li><a href="examples.html"><span class="nav-number">8</span><span>실사용 사례</span></a></li><li><a href="references.html"><span class="nav-number">9</span><span>정리와 팩트체크</span></a></li><li><a href="workflow.html"><span class="nav-number">10</span><span>부록 · 업무 적용</span></a></li></ol></nav>
+      <div class="sidebar-foot"><span>팀 밋업 · 20분</span><a href="references.html#official-sources">공식 참고 자료</a><a href="https://github.com/tell-me-W/why-orca">GitHub 저장소</a></div>
+    </aside>
+    <main id="main" tabindex="-1">
+      <header class="article-header">
+        <p class="chapter-label">이유 5 · 화면에서 검토까지</p>
+        <h1>화면을 보면서 UI 수정 요청하기</h1>
+        <p class="page-description">내장 브라우저에서 요소를 선택하고, 화면 맥락을 담은 요청으로 UI를 수정합니다.</p>
+        <div class="article-meta"><span>12:00–14:00</span><span>수정 <time datetime="2026-10-29">2026-10-29</time></span></div>
+      </header>
+      <details class="inline-toc"><summary>이 페이지의 목차</summary><nav aria-label="본문 소목차"><ul class="toc-list"><li class="toc-level-2"><a href="#browser-workspace">작업하던 화면을 같은 공간에서 확인한다</a></li><li class="toc-level-2"><a href="#design-mode">Design Mode로 수정 대상을 가리킨다</a></li><li class="toc-level-2"><a href="#browser-agent">브라우저를 보며 개발하고 검증한다</a></li><li class="toc-level-2"><a href="#browser-conditions">사내 환경에서 확인할 범위</a></li></ul></nav></details>
+      <article class="article-content"><p>화면의 어느 부분을 바꾸고 싶은지 말로 설명하다 보면 DOM을 찾고, 스크린샷을 찍고, 코드 위치를 전달하는 데 시간이 듭니다. Orca에서는 개발 화면을 보면서 수정할 요소를 선택해 에이전트에 전달할 수 있습니다.</p>
+
+<h2 id="browser-workspace">작업하던 화면을 같은 공간에서 확인한다</h2>
+<p>Orca의 내장 브라우저는 Chromium 기반이며 worktree별로 탭을 관리합니다. 작업을 전환하면 해당 worktree의 브라우저 탭과 스크롤 위치로 돌아갈 수 있습니다. 개발자 도구와 화면 크기 에뮬레이션도 제공하므로 수정한 화면을 보거나 반응형 배치를 확인할 때 사용할 수 있습니다. <a class="source-link" href="https://www.onorca.dev/docs/browser/overview">내장 브라우저 공식 문서</a></p>
+
+<h2 id="design-mode">Design Mode로 수정 대상을 가리킨다</h2>
+<p>Design Mode를 켜고 화면 요소를 클릭하면 그 요소의 HTML, 계산된 CSS, 잘라낸 스크린샷을 에이전트에 전달할 수 있습니다. 개발용 source map이 있을 때는 소스 파일과 줄 정보도 포함합니다. 여기에 원하는 변경을 적으면 에이전트가 그 맥락을 받아 소스를 수정합니다. <a class="source-link" href="https://www.onorca.dev/docs/browser/design-mode">Design Mode 공식 문서</a></p>
+<figure class="diagram">
+  <div class="flow-diagram flow-diagram-branch" aria-label="화면 요소를 선택하고 변경 요청을 전달하면 에이전트가 소스를 수정하고 사람이 결과 화면과 변경 내용을 검증한다">
+    <div class="flow-step"><strong>화면 요소 선택</strong><span>어느 부분을 바꿀지 지정</span></div>
+    <div class="flow-arrow" aria-hidden="true">↓</div>
+    <div class="flow-step"><strong>변경 요청 전달</strong><span>요소 정보와 함께 원하는 결과를 설명</span></div>
+    <div class="flow-arrow" aria-hidden="true">↓</div>
+    <div class="flow-step"><strong>에이전트의 소스 수정</strong><span>프로젝트 파일에 변경을 적용</span></div>
+    <div class="flow-arrow" aria-hidden="true">↓</div>
+    <div class="flow-step"><strong>화면과 Diff 확인</strong><span>요청대로 바뀌었는지 직접 검증</span></div>
+  </div>
+  <figcaption>선택한 요소는 수정 요청의 맥락입니다. 최종 결과는 화면과 코드에서 확인합니다.</figcaption>
+</figure>
+<p>여러 요소에 메모를 남겨 모아서 보낼 수도 있습니다. 이 기능의 업무상 가치는 “어느 버튼인지”를 설명하는 수고를 줄이고, 수정 요청과 결과 확인을 같은 작업 공간에서 이어 가는 데 있습니다. <a class="source-link" href="https://www.onorca.dev/docs/browser/design-mode">페이지 주석 모아 보내기</a></p>
+
+<h2 id="browser-agent">브라우저를 보며 개발하고 검증한다</h2>
+<p>공식 절차는 요소 선택 → 변경 요청 → 에이전트의 소스 수정 → 화면 재확인입니다. 프로젝트에 hot reload가 구성되어 있으면 변경 후 화면이 갱신됩니다. 그렇지 않으면 필요한 빌드나 새로고침을 직접 진행합니다. Orca CLI를 통한 브라우저 조회와 조작도 지원합니다. <a class="source-link" href="https://www.onorca.dev/docs/recipes/design-mode-fix">UI 수정 절차</a> · <a class="source-link" href="https://www.onorca.dev/docs/browser/overview">브라우저 자동화</a></p>
+
+<h2 id="browser-conditions">사내 환경에서 확인할 범위</h2>
+<p>내장 브라우저와 Design Mode의 존재는 공식 문서로 확인됩니다. 사내 OpenCode와 LLM에서 첨부된 이미지까지 해석하고 요청을 수행하는지는 별도 확인이 필요합니다. 사용하는 모델의 입력 지원과 도구 실행 권한에 따라 결과가 달라질 수 있으므로, 이 강의에서는 <strong>“화면 요소의 맥락을 전달해 수정을 요청하고 검증한다”</strong>고 설명합니다. 공개 문서만으로 사내 구성 전체의 호환성을 보장할 수는 없습니다.</p>
+
+<details class="speaker-notes">
+  <summary>발표자 메모 · 2분 진행</summary>
+  <p>첫 1분에는 브라우저와 에이전트를 오가며 수정 위치를 설명하던 과정을 떠올리게 하고, 관계도를 따라 Design Mode의 전달 내용을 설명합니다. 다음 1분에는 에이전트가 실제 소스를 바꾸므로 화면과 Diff를 함께 확인해야 한다고 연결합니다. 실제 화면과 수정 결과는 발표자의 실사용 사례에서 보여 줍니다.</p>
+</details>
+</article>
+      <nav class="page-navigation" aria-label="이전과 다음 장"><a class="page-prev" href="recovery.html"><span>이전 장</span><strong>← 세션 복구와 이력</strong></a><a class="page-next" href="examples.html"><span>다음 장</span><strong>실사용 사례 →</strong></a></nav>
+      <footer class="article-footer">Why Orca · 내가 Orca를 사용하는 이유<span>사내 LLM API + OpenCode 환경을 위한 팀 밋업 강의노트</span></footer>
+    </main>
+    <aside class="page-toc" aria-label="이 페이지에서">
+      <p class="nav-label">이 페이지에서</p>
+      <nav><ul class="toc-list"><li class="toc-level-2"><a href="#browser-workspace">작업하던 화면을 같은 공간에서 확인한다</a></li><li class="toc-level-2"><a href="#design-mode">Design Mode로 수정 대상을 가리킨다</a></li><li class="toc-level-2"><a href="#browser-agent">브라우저를 보며 개발하고 검증한다</a></li><li class="toc-level-2"><a href="#browser-conditions">사내 환경에서 확인할 범위</a></li></ul></nav>
+    </aside>
+  </div>
+  <dialog id="search-dialog" aria-labelledby="search-title">
+    <div class="dialog-header"><h2 id="search-title">강의 검색</h2><button class="text-button" type="button" data-dialog-close>닫기 <kbd>Esc</kbd></button></div>
+    <label class="sr-only" for="search-input">검색어</label>
+    <input id="search-input" type="search" placeholder="예: worktree, 완료 조건, 스킬" autocomplete="off" spellcheck="false">
+    <p id="search-status" role="status" aria-live="polite">제목과 본문에서 검색합니다.</p>
+    <ul id="search-results"></ul>
+  </dialog>
+  <dialog id="menu-dialog" aria-labelledby="menu-title">
+    <div class="dialog-header"><h2 id="menu-title">강의 목차</h2><button class="text-button" type="button" data-dialog-close>닫기</button></div>
+    <nav><ol class="book-nav"><li><a href="index.html"><span class="nav-number"></span><span>강의 안내</span></a></li><li><a href="why-orca.html"><span class="nav-number">1</span><span>다섯 가지 사용 이유</span></a></li><li><a href="worktree.html"><span class="nav-number">2</span><span>Git worktree 이해</span></a></li><li><a href="orchestration.html"><span class="nav-number">3</span><span>스킬과 오케스트레이션</span></a></li><li><a href="terminal.html"><span class="nav-number">4</span><span>터미널과 상태 추적</span></a></li><li><a href="review.html"><span class="nav-number">5</span><span>Diff 검토와 피드백</span></a></li><li><a href="recovery.html"><span class="nav-number">6</span><span>세션 복구와 이력</span></a></li><li><a href="browser.html" aria-current="page"><span class="nav-number">7</span><span>브라우저와 Design Mode</span></a></li><li><a href="examples.html"><span class="nav-number">8</span><span>실사용 사례</span></a></li><li><a href="references.html"><span class="nav-number">9</span><span>정리와 팩트체크</span></a></li><li><a href="workflow.html"><span class="nav-number">10</span><span>부록 · 업무 적용</span></a></li></ol></nav>
+  </dialog>
+  <noscript><div class="noscript-note">검색과 테마 전환은 JavaScript를 사용합니다. 강의 본문과 목차 링크는 그대로 읽을 수 있습니다.</div></noscript>
+</body>
+</html>

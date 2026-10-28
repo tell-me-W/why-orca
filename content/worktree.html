@@ -1,0 +1,67 @@
+<p class="lead">Git worktree는 한 저장소에 작업 폴더를 추가하는 기능입니다. 각 폴더에서 서로 다른 브랜치를 열어 두면, 진행 중인 작업을 그대로 둔 채 다른 작업을 시작할 수 있습니다. 여러 에이전트에게 파일 수정을 맡길 때도 각자의 작업 공간을 정하는 데 도움이 됩니다.</p>
+
+<h2 id="branch-worktree-clone">브랜치와 작업 폴더를 구분하기</h2>
+<p>브랜치를 만드는 일과 작업할 폴더를 만드는 일은 다릅니다. 브랜치를 여러 개 만들어도 현재 폴더에서 보이는 파일은 현재 checkout한 상태입니다. 이 구분을 먼저 이해하면 worktree가 필요한 이유도 명확해집니다.</p>
+<div class="table-wrap">
+  <table>
+    <caption>Branch, worktree, clone의 역할</caption>
+    <thead><tr><th scope="col">개념</th><th scope="col">뜻</th><th scope="col">무엇을 늘리는가</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Branch</th><td>커밋을 가리키며 이동하는 참조</td><td>변경 이력의 갈래</td></tr>
+      <tr><th scope="row">Worktree</th><td>같은 저장소에 연결된 작업 폴더와 상태</td><td>동시에 열어 둘 작업 공간</td></tr>
+      <tr><th scope="row">Clone</th><td>새 디렉터리에 복제한 저장소</td><td>브랜치 참조 등을 별도로 관리하는 저장소</td></tr>
+    </tbody>
+  </table>
+</div>
+<p>브랜치의 정의는 <a href="https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell">Git 공식 책</a>, 저장소 복제 동작은 <a href="https://git-scm.com/docs/git-clone">git-clone 문서</a>에서 확인할 수 있습니다. 로컬 clone에는 저장 공간을 절약하는 방식도 있으므로, clone을 항상 모든 데이터를 중복 저장하는 방법으로 설명하면 부정확합니다.</p>
+
+<h2 id="shared-repository-separate-workspaces">이력은 공유하고 작업 공간은 나누기</h2>
+<p>아래 그림에서 세 폴더는 같은 저장소에 연결되어 있습니다. <code>task-a</code>의 파일을 고쳐도 <code>task-b</code> 폴더의 파일이 실시간으로 바뀌지는 않습니다. 커밋과 브랜치 참조를 함께 사용하는 것과, 작업 파일을 함께 수정하는 것은 구분해야 합니다.</p>
+<figure class="diagram">
+  <div class="worktree-diagram">
+    <div class="repo-hub"><strong>공통 저장소 데이터</strong><span>커밋 객체 · 브랜치와 태그 참조</span></div>
+    <div class="workspace-grid">
+      <div class="workspace"><strong>repo</strong><span>main</span><p>기본 작업 폴더<br>자체 HEAD와 index</p></div>
+      <div class="workspace"><strong>repo-task-a</strong><span>meetup/task-a</span><p>작업 A의 파일<br>자체 HEAD와 index</p></div>
+      <div class="workspace"><strong>repo-task-b</strong><span>meetup/task-b</span><p>작업 B의 파일<br>자체 HEAD와 index</p></div>
+    </div>
+  </div>
+  <figcaption>그림 1. 저장소 하나에 연결된 세 작업 폴더. 각 폴더의 파일과 작업 상태는 따로 유지됩니다.</figcaption>
+</figure>
+<div class="table-wrap">
+  <table>
+    <caption>여러 worktree 사이에서 공유하거나 따로 유지하는 상태</caption>
+    <thead><tr><th scope="col">공유</th><th scope="col">폴더별로 분리</th></tr></thead>
+    <tbody>
+      <tr><td>커밋 객체와 이력</td><td>checkout한 작업 파일과 미커밋 변경</td></tr>
+      <tr><td>브랜치·태그 참조</td><td>현재 위치를 나타내는 HEAD</td></tr>
+      <tr><td>기본 저장소 설정</td><td>커밋할 내용을 준비하는 index</td></tr>
+    </tbody>
+  </table>
+</div>
+<p>공유 데이터와 개별 상태의 경계는 <a href="https://git-scm.com/docs/gitrepository-layout">Git 저장소 구조 문서</a>에 설명되어 있습니다. 같은 저장소 안에서 이력을 참조할 수 있어도 다른 브랜치의 변경을 내 작업에 반영하는 과정은 별도로 필요합니다.</p>
+
+<h2 id="create-worktrees">세 줄로 작업 공간 만들기</h2>
+<p>다음은 개념을 확인하는 교육용 명령입니다. 현재 위치는 기존 저장소 안이며, 로컬 <code>main</code> 브랜치가 존재한다고 가정합니다. 새 브랜치명과 목적지 경로는 아직 사용하지 않아야 합니다. 출발점은 원격의 최신 상태가 아니라 <strong>명령을 실행할 때 로컬 main이 가리키는 커밋</strong>입니다.</p>
+<pre><code class="language-bash">git worktree add -b meetup/task-a ../repo-task-a main
+git worktree add -b meetup/task-b ../repo-task-b main
+git worktree list</code></pre>
+<p>첫 두 줄은 새 브랜치와 작업 폴더를 만듭니다. 마지막 줄은 연결된 worktree를 보여 줍니다. 생성 후 각 폴더를 열어 담당 작업을 진행합니다. 기존 폴더의 미커밋 변경과 untracked 파일은 자동 복사되지 않습니다. 기본적으로 다른 worktree에서 이미 checkout한 브랜치를 다시 checkout하는 것도 거절됩니다. 자세한 동작은 <a href="https://git-scm.com/docs/git-worktree">git-worktree 문서</a>를 참고하세요.</p>
+
+<h2 id="limits-of-separation">분리한 뒤에도 필요한 일</h2>
+<p>Worktree를 쓰면 수정 공간을 구분하기 쉬워집니다. 그러나 작업을 잘게 나누고, 결과가 서로 맞는지 확인하고, 통합 여부를 판단하는 일은 남습니다. 팀에서는 다음 세 가지를 함께 정하는 것이 좋습니다.</p>
+<ul>
+  <li><strong>통합 책임:</strong> 두 브랜치가 같은 영역을 다르게 수정하면 merge 충돌이 생길 수 있습니다. 충돌 없이 합쳐져도 기능이 함께 동작하는지는 테스트와 리뷰로 확인합니다. 충돌 처리 자체는 <a href="https://git-scm.com/docs/git-merge">git-merge 문서</a>의 범위입니다.</li>
+  <li><strong>실행 환경:</strong> 개발 서버 포트, 외부 데이터베이스, 공유 캐시는 프로젝트 방식에 맞춰 구분합니다. 폴더가 따로 있어도 같은 자원에 접근할 수 있습니다. 의존성과 환경 파일의 준비 방법도 정해 두면 좋습니다.</li>
+  <li><strong>접근 권한:</strong> Worktree 자체는 에이전트의 파일 접근 권한을 제한하지 않습니다. 같은 사용자 권한으로 실행된다면 다른 폴더에 접근할 수 있습니다. 접근 제한이 필요하면 실행 도구의 sandbox나 운영체제 권한 등 별도의 장치를 사용합니다.</li>
+</ul>
+<p>이렇게 작업 공간을 마련했다면, 다음 단계는 담당자와 의존 관계를 정하는 것입니다. 누가 무엇을 맡고, 어떤 결과를 기다리며, 완료를 어떻게 확인할지 연결하는 절차가 오케스트레이션입니다.</p>
+
+<details class="speaker-notes">
+  <summary>발표자 메모와 보충 설명</summary>
+  <h3 id="presenter-worktree-guidance">3분 안에 설명하기</h3>
+  <p>개념 비교 40초, 그림과 공유·분리 표 1분, 명령 40초, 주의점과 다음 장 연결 40초를 배정합니다. Git 내부 경로보다 “작업 파일은 따로, 이력은 함께”라는 관계를 설명하세요. 명령을 실행하는 시연은 선택 사항이며, 본문은 실제 업무 성과나 실사용 사례를 가정하지 않습니다.</p>
+  <h3 id="worktree-follow-up">질문이 나왔을 때 덧붙이기</h3>
+  <p>Worktree 하나에 에이전트 하나를 반드시 배치해야 하는 것은 아닙니다. 같은 폴더에서 협업한다면 수정 책임을 더 명확히 정해야 합니다. 서로 독립적으로 변경할 수 있는 작업일수록 공간을 나누는 방식이 이해하기 쉽습니다. 단순한 오타 수정처럼 작은 일은 폴더를 추가로 만드는 비용까지 고려해서 선택하세요.</p>
+  <p>작업이 끝나면 변경을 보존했는지 확인하고 <code>git worktree remove</code>로 작업 폴더를 정리합니다. 브랜치 삭제는 별도입니다. Submodule을 사용하는 프로젝트라면 공식 worktree 문서의 지원 제약도 확인하세요.</p>
+</details>

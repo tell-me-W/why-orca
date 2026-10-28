@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="여러 터미널의 실행 상태, 완료 알림, 입력 대기 작업을 한곳에서 확인합니다.">
+  <meta name="color-scheme" content="light dark">
+  <title>어떤 작업에 개입할지 알아보기 · Why Orca</title>
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem('orca-notes-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){document.documentElement.dataset.theme='light'}</script>
+  <link rel="stylesheet" href="assets/site.css">
+  <noscript><style>@media(max-width:760px){.book-sidebar{display:block;position:static;height:auto;padding:20px 0;border-bottom:1px solid var(--line)}.sidebar-foot{display:none}}</style></noscript>
+  <script src="assets/search-index.js" defer></script>
+  <script src="assets/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html" aria-label="Why Orca 강의노트 처음으로"><strong>Why Orca</strong><span>강의노트</span></a>
+      <div class="header-actions">
+        <button class="search-trigger" type="button" data-search-open hidden><span>강의 검색</span><kbd>Ctrl K</kbd></button>
+        <button class="text-button theme-toggle" type="button" aria-label="어두운 테마로 전환" hidden>어둡게</button>
+        <button class="text-button print-button" type="button" hidden>인쇄</button>
+        <button class="text-button mobile-menu-trigger" type="button" aria-haspopup="dialog" aria-controls="menu-dialog" hidden>목차</button>
+      </div>
+    </div>
+  </header>
+  <div class="book-layout">
+    <aside class="book-sidebar" aria-label="전체 강의 목차">
+      <p class="nav-label">강의 목차</p>
+      <nav><ol class="book-nav"><li><a href="index.html"><span class="nav-number"></span><span>강의 안내</span></a></li><li><a href="why-orca.html"><span class="nav-number">1</span><span>다섯 가지 사용 이유</span></a></li><li><a href="worktree.html"><span class="nav-number">2</span><span>Git worktree 이해</span></a></li><li><a href="orchestration.html"><span class="nav-number">3</span><span>스킬과 오케스트레이션</span></a></li><li><a href="terminal.html" aria-current="page"><span class="nav-number">4</span><span>터미널과 상태 추적</span></a></li><li><a href="review.html"><span class="nav-number">5</span><span>Diff 검토와 피드백</span></a></li><li><a href="recovery.html"><span class="nav-number">6</span><span>세션 복구와 이력</span></a></li><li><a href="browser.html"><span class="nav-number">7</span><span>브라우저와 Design Mode</span></a></li><li><a href="examples.html"><span class="nav-number">8</span><span>실사용 사례</span></a></li><li><a href="references.html"><span class="nav-number">9</span><span>정리와 팩트체크</span></a></li><li><a href="workflow.html"><span class="nav-number">10</span><span>부록 · 업무 적용</span></a></li></ol></nav>
+      <div class="sidebar-foot"><span>팀 밋업 · 20분</span><a href="references.html#official-sources">공식 참고 자료</a><a href="https://github.com/tell-me-W/why-orca">GitHub 저장소</a></div>
+    </aside>
+    <main id="main" tabindex="-1">
+      <header class="article-header">
+        <p class="chapter-label">이유 2 · 실행 상태와 알림</p>
+        <h1>어떤 작업에 개입할지 알아보기</h1>
+        <p class="page-description">여러 터미널의 실행 상태, 완료 알림, 입력 대기 작업을 한곳에서 확인합니다.</p>
+        <div class="article-meta"><span>7:00–9:00</span><span>수정 <time datetime="2026-10-29">2026-10-29</time></span></div>
+      </header>
+      <details class="inline-toc"><summary>이 페이지의 목차</summary><nav aria-label="본문 소목차"><ul class="toc-list"><li class="toc-level-2"><a href="#terminal-live-state">터미널을 열기 전에 상태부터 보기</a></li><li class="toc-level-2"><a href="#terminal-notifications">완료와 응답 대기를 모아서 확인하기</a></li><li class="toc-level-2"><a href="#terminal-opencode-check">사내 OpenCode에서는 무엇을 확인할까</a></li></ul></nav></details>
+      <article class="article-content"><p>여러 OpenCode 에이전트를 실행하면 각 터미널을 번갈아 열어 진행 상황을 확인해야 합니다. Orca에서는 작업 공간과 터미널, 상태 표시를 함께 보면서 <strong>지금 내가 확인할 작업</strong>을 찾을 수 있습니다. 사내 LLM API를 사용하는 환경에서도 이 관리 흐름을 적용할 수 있지만, 상태 연동은 실제 OpenCode 실행 환경에서 확인해야 합니다.</p>
+
+<h2 id="terminal-live-state">터미널을 열기 전에 상태부터 보기</h2>
+<p>Orca의 터미널은 탭과 분할 화면으로 배치할 수 있습니다. 에이전트 탭에는 작업 중, 입력 대기, 완료 등의 상태가 표시됩니다. 출력이 궁금한 작업을 선택하면 해당 터미널을 읽을 수 있어, 작업별로 창과 폴더를 다시 찾는 수고를 줄일 수 있습니다. <a class="source-link" href="https://www.onorca.dev/docs/terminal">공식 문서: Terminal</a></p>
+<p>상태는 에이전트가 보내는 신호와 연동 정보를 바탕으로 판단합니다. Orca가 일반 셸로 인식한 터미널에는 에이전트 상태가 나타나지 않을 수 있습니다. 상태 표시는 확인할 대상을 고르는 단서로 사용하고, 실제 결과는 출력과 변경 내역에서 확인합니다. <a class="source-link" href="https://www.onorca.dev/docs/model/agents-sessions">공식 문서: Agents &amp; sessions</a></p>
+
+<h2 id="terminal-notifications">완료와 응답 대기를 모아서 확인하기</h2>
+<p>터미널 에이전트의 작업 중 상태가 idle로 바뀌면 Orca는 완료 알림을 제공하며, 알림에서 해당 작업 공간으로 이동할 수 있습니다. 알림 방식은 설정과 세션 종류에 따라 다릅니다. 일부 structured chat은 소리나 시스템 알림 대신 읽지 않음 표시를 사용합니다. <a class="source-link" href="https://www.onorca.dev/docs/notifications">공식 문서: Notifications &amp; Inbox</a></p>
+<p>Agents feed에서는 여러 작업 공간의 완료, 질문, 입력 대기와 최근 응답을 모아 볼 수 있습니다. 업무에서는 이 화면을 보고 먼저 답할 질문과 다음에 검토할 결과의 순서를 정할 수 있습니다. 에이전트가 멈춰 보일 때도 출력과 대기 이유를 살펴보는 출발점이 됩니다. <a class="source-link" href="https://www.onorca.dev/docs/activity">공식 문서: Agents feed</a></p>
+
+<h2 id="terminal-opencode-check">사내 OpenCode에서는 무엇을 확인할까</h2>
+<p>공식 지원 목록에는 OpenCode의 상태 연동이 명시되어 있습니다. 다만 사내 변경판의 실행 명령, 신호, 설정까지 검증됐다는 뜻은 아닙니다. 팀 환경에서는 작업 시작, 입력 요청, 작업 완료, 프로세스 종료가 화면에 어떻게 나타나는지 확인해 두면 좋습니다. <a class="source-link" href="https://www.onorca.dev/docs/agents/supported">공식 문서: Supported agents</a></p>
+<p><strong>“먹통을 자동으로 해결한다”보다는 “대기하거나 중단된 작업을 살펴보고 대응하기 편하다”가 정확한 설명입니다.</strong> 무응답의 원인이 모델 응답 지연인지, 입력 대기인지, 프로세스 문제인지는 터미널과 실행 환경을 함께 확인해야 합니다. 빠른 대응이라는 효과는 발표자의 실제 사례에서 보여줍니다.</p>
+
+<details class="speaker-notes">
+  <summary>발표자 메모 · 2분</summary>
+  <p>“어느 작업에 내가 응답해야 하는가”를 중심으로 설명합니다. 상태와 알림은 확인할 순서를 정하는 데 쓰며, 완료 표시는 코드 검증 결과와 구분합니다. 사내 OpenCode의 무응답을 Orca가 자동으로 진단하거나 복구한다고 말하지 않습니다.</p>
+</details>
+</article>
+      <nav class="page-navigation" aria-label="이전과 다음 장"><a class="page-prev" href="orchestration.html"><span>이전 장</span><strong>← 스킬과 오케스트레이션</strong></a><a class="page-next" href="review.html"><span>다음 장</span><strong>Diff 검토와 피드백 →</strong></a></nav>
+      <footer class="article-footer">Why Orca · 내가 Orca를 사용하는 이유<span>사내 LLM API + OpenCode 환경을 위한 팀 밋업 강의노트</span></footer>
+    </main>
+    <aside class="page-toc" aria-label="이 페이지에서">
+      <p class="nav-label">이 페이지에서</p>
+      <nav><ul class="toc-list"><li class="toc-level-2"><a href="#terminal-live-state">터미널을 열기 전에 상태부터 보기</a></li><li class="toc-level-2"><a href="#terminal-notifications">완료와 응답 대기를 모아서 확인하기</a></li><li class="toc-level-2"><a href="#terminal-opencode-check">사내 OpenCode에서는 무엇을 확인할까</a></li></ul></nav>
+    </aside>
+  </div>
+  <dialog id="search-dialog" aria-labelledby="search-title">
+    <div class="dialog-header"><h2 id="search-title">강의 검색</h2><button class="text-button" type="button" data-dialog-close>닫기 <kbd>Esc</kbd></button></div>
+    <label class="sr-only" for="search-input">검색어</label>
+    <input id="search-input" type="search" placeholder="예: worktree, 완료 조건, 스킬" autocomplete="off" spellcheck="false">
+    <p id="search-status" role="status" aria-live="polite">제목과 본문에서 검색합니다.</p>
+    <ul id="search-results"></ul>
+  </dialog>
+  <dialog id="menu-dialog" aria-labelledby="menu-title">
+    <div class="dialog-header"><h2 id="menu-title">강의 목차</h2><button class="text-button" type="button" data-dialog-close>닫기</button></div>
+    <nav><ol class="book-nav"><li><a href="index.html"><span class="nav-number"></span><span>강의 안내</span></a></li><li><a href="why-orca.html"><span class="nav-number">1</span><span>다섯 가지 사용 이유</span></a></li><li><a href="worktree.html"><span class="nav-number">2</span><span>Git worktree 이해</span></a></li><li><a href="orchestration.html"><span class="nav-number">3</span><span>스킬과 오케스트레이션</span></a></li><li><a href="terminal.html" aria-current="page"><span class="nav-number">4</span><span>터미널과 상태 추적</span></a></li><li><a href="review.html"><span class="nav-number">5</span><span>Diff 검토와 피드백</span></a></li><li><a href="recovery.html"><span class="nav-number">6</span><span>세션 복구와 이력</span></a></li><li><a href="browser.html"><span class="nav-number">7</span><span>브라우저와 Design Mode</span></a></li><li><a href="examples.html"><span class="nav-number">8</span><span>실사용 사례</span></a></li><li><a href="references.html"><span class="nav-number">9</span><span>정리와 팩트체크</span></a></li><li><a href="workflow.html"><span class="nav-number">10</span><span>부록 · 업무 적용</span></a></li></ol></nav>
+  </dialog>
+  <noscript><div class="noscript-note">검색과 테마 전환은 JavaScript를 사용합니다. 강의 본문과 목차 링크는 그대로 읽을 수 있습니다.</div></noscript>
+</body>
+</html>

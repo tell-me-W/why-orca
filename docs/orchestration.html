@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="독립 작업은 병렬로 맡기고, 의존하는 작업은 결과를 확인한 뒤 이어갑니다.">
+  <meta name="color-scheme" content="light dark">
+  <title>스킬로 여러 에이전트의 일 연결하기 · Why Orca</title>
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem('orca-notes-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){document.documentElement.dataset.theme='light'}</script>
+  <link rel="stylesheet" href="assets/site.css">
+  <noscript><style>@media(max-width:760px){.book-sidebar{display:block;position:static;height:auto;padding:20px 0;border-bottom:1px solid var(--line)}.sidebar-foot{display:none}}</style></noscript>
+  <script src="assets/search-index.js" defer></script>
+  <script src="assets/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html" aria-label="Why Orca 강의노트 처음으로"><strong>Why Orca</strong><span>강의노트</span></a>
+      <div class="header-actions">
+        <button class="search-trigger" type="button" data-search-open hidden><span>강의 검색</span><kbd>Ctrl K</kbd></button>
+        <button class="text-button theme-toggle" type="button" aria-label="어두운 테마로 전환" hidden>어둡게</button>
+        <button class="text-button print-button" type="button" hidden>인쇄</button>
+        <button class="text-button mobile-menu-trigger" type="button" aria-haspopup="dialog" aria-controls="menu-dialog" hidden>목차</button>
+      </div>
+    </div>
+  </header>
+  <div class="book-layout">
+    <aside class="book-sidebar" aria-label="전체 강의 목차">
+      <p class="nav-label">강의 목차</p>
+      <nav><ol class="book-nav"><li><a href="index.html"><span class="nav-number"></span><span>강의 안내</span></a></li><li><a href="why-orca.html"><span class="nav-number">1</span><span>다섯 가지 사용 이유</span></a></li><li><a href="worktree.html"><span class="nav-number">2</span><span>Git worktree 이해</span></a></li><li><a href="orchestration.html" aria-current="page"><span class="nav-number">3</span><span>스킬과 오케스트레이션</span></a></li><li><a href="terminal.html"><span class="nav-number">4</span><span>터미널과 상태 추적</span></a></li><li><a href="review.html"><span class="nav-number">5</span><span>Diff 검토와 피드백</span></a></li><li><a href="recovery.html"><span class="nav-number">6</span><span>세션 복구와 이력</span></a></li><li><a href="browser.html"><span class="nav-number">7</span><span>브라우저와 Design Mode</span></a></li><li><a href="examples.html"><span class="nav-number">8</span><span>실사용 사례</span></a></li><li><a href="references.html"><span class="nav-number">9</span><span>정리와 팩트체크</span></a></li><li><a href="workflow.html"><span class="nav-number">10</span><span>부록 · 업무 적용</span></a></li></ol></nav>
+      <div class="sidebar-foot"><span>팀 밋업 · 20분</span><a href="references.html#official-sources">공식 참고 자료</a><a href="https://github.com/tell-me-W/why-orca">GitHub 저장소</a></div>
+    </aside>
+    <main id="main" tabindex="-1">
+      <header class="article-header">
+        <p class="chapter-label">이유 1 · 배정과 진행 관리</p>
+        <h1>스킬로 여러 에이전트의 일 연결하기</h1>
+        <p class="page-description">독립 작업은 병렬로 맡기고, 의존하는 작업은 결과를 확인한 뒤 이어갑니다.</p>
+        <div class="article-meta"><span>4:00–7:00</span><span>수정 <time datetime="2026-10-29">2026-10-29</time></span></div>
+      </header>
+      <details class="inline-toc"><summary>이 페이지의 목차</summary><nav aria-label="본문 소목차"><ul class="toc-list"><li class="toc-level-2"><a href="#orchestration-overview">사람, 조정자, 작업자의 역할</a></li><li class="toc-level-2"><a href="#choose-the-skill">Orca 스킬은 도구를 쓰는 절차다</a></li><li class="toc-level-2"><a href="#coordinate-work">같이 시작할 일과 기다릴 일을 구분한다</a></li><li class="toc-level-2"><a href="#load-installed-guide">OpenCode에서 시작하기 전 확인할 것</a></li></ul></nav></details>
+      <article class="article-content"><p>여러 OpenCode를 켜 두면 작업을 동시에 진행할 수 있습니다. 그다음에는 누가 무엇을 맡고, 어떤 결과를 기다리며, 언제 끝났는지를 관리해야 합니다. <strong>Worktree는 수정할 공간을 나누고, 오케스트레이션은 그 안에서 수행할 일을 연결합니다.</strong></p>
+
+<h2 id="orchestration-overview">사람, 조정자, 작업자의 역할</h2>
+<p>사람이 목표와 검토 기준을 정하면, 조정자(coordinator) 역할의 에이전트가 작업을 나눠 맡깁니다. 작업자(worker)는 배정받은 일을 수행하고 결과나 질문을 돌려줍니다. Orca는 이 과정의 작업, 배정, 메시지와 완료 상태를 관리합니다. <a class="source-link" href="https://www.onorca.dev/docs/cli/orchestration">공식 오케스트레이션 문서</a></p>
+<figure class="diagram">
+  <div class="flow-diagram flow-diagram-branch" aria-label="사람이 목표와 완료 조건을 정하면 조정자가 OpenCode 작업자 A와 B에 독립 작업을 배정하고 결과를 확인한다">
+    <div class="flow-step"><strong>목표와 완료 조건</strong><span>사람이 작업 범위와 검토 기준을 정함</span></div>
+    <div class="flow-arrow" aria-hidden="true">↓</div>
+    <div class="flow-step"><strong>Coordinator</strong><span>작업 배정 · 질문 처리 · 완료 확인</span></div>
+    <div class="flow-arrow" aria-hidden="true">↓</div>
+    <div class="worker-pair">
+      <div class="worker"><strong>OpenCode A</strong><span>Worktree A에서 맡은 작업 수행</span></div>
+      <div class="worker"><strong>OpenCode B</strong><span>Worktree B에서 맡은 작업 수행</span></div>
+    </div>
+    <div class="flow-arrow" aria-hidden="true">↓</div>
+    <div class="flow-step"><strong>결과 확인과 후속 작업</strong><span>완료 보고와 변경 내역을 확인한 뒤 다음 배정</span></div>
+  </div>
+  <figcaption>역할을 설명하는 관계도입니다. 실제 업무 사례는 발표자가 별도로 작성합니다.</figcaption>
+</figure>
+
+<h2 id="choose-the-skill">Orca 스킬은 도구를 쓰는 절차다</h2>
+<p>스킬은 에이전트가 Orca를 언제, 어떻게 사용할지 읽는 지침입니다. <code>orca-cli</code>는 worktree·터미널·내장 브라우저를 다루고, <code>orchestration</code>은 작업자를 감독하며 질문과 완료 보고를 주고받는 절차를 안내합니다. 에이전트가 스킬을 읽고 CLI를 호출하면 실행 중인 Orca가 요청을 처리합니다. <a class="source-link" href="https://www.onorca.dev/docs/cli/skills">공식 스킬 안내</a></p>
+<p>따라서 “스킬을 설치했다”와 “협업 작업을 실제로 배정했다”는 서로 다른 단계입니다. 에이전트가 할 일과 수정 범위, 완료 조건을 이해해야 협업도 시작할 수 있습니다.</p>
+
+<h2 id="coordinate-work">같이 시작할 일과 기다릴 일을 구분한다</h2>
+<ol>
+  <li><strong>범위를 나눈다.</strong> 작업마다 담당 파일과 원하는 결과, 확인할 테스트를 정합니다.</li>
+  <li><strong>독립적인 일을 함께 시작한다.</strong> 서로의 결과가 없어도 진행할 수 있는 작업을 병렬로 맡깁니다.</li>
+  <li><strong>결과를 확인한 뒤 다음 일을 맡긴다.</strong> 선행 결과가 필요한 작업에는 의존 관계를 둡니다.</li>
+</ol>
+<p>작업 간 선후 관계를 순환 없이 연결한 구조를 DAG라고 합니다. Orca는 작업의 의존성과 상태를 기록하지만, 작업을 잘 나누고 결과를 검토하는 책임까지 대신하지는 않습니다. 같은 worktree에 여러 작업자를 배정할 수도 있으므로 파일을 분리하려면 <strong>작업자별 worktree를 실제로 선택</strong>해야 합니다. <a class="source-link" href="https://www.onorca.dev/docs/cli/orchestration">Task 의존성과 worker 배정</a></p>
+
+<details>
+  <summary>보충 · Run, Task, Dispatch는 무엇인가요?</summary>
+  <dl class="concept-list" id="run-task-dispatch">
+    <div><dt>Run</dt><dd>한 협업의 작업과 조정자 수신함을 묶습니다. Run 자체가 작업자를 자동 배치하는 스케줄러는 아닙니다.</dd></div>
+    <div><dt>Task</dt><dd>할 일과 의존성, 진행 상태를 기록합니다.</dd></div>
+    <div><dt>Dispatch</dt><dd>한 작업을 작업자에게 맡긴 수행 시도입니다. 재시도할 때 이전 보고와 구분합니다.</dd></div>
+    <div><dt>완료 보고</dt><dd><code>worker_done</code>에 결과를 담습니다. 작업 중이라는 heartbeat와 구분하며, 보고가 왔다고 테스트나 병합까지 완료된 것은 아닙니다.</dd></div>
+  </dl>
+  <p id="questions-and-gates">작업자는 <code>ask</code>로 조정자에게 질문합니다. 조정자는 decision gate로 특정 작업을 결정이 내려질 때까지 보류할 수도 있습니다. <a href="https://www.onorca.dev/docs/cli/orchestration">공식 개념과 메시지 설명</a></p>
+</details>
+
+<h2 id="load-installed-guide">OpenCode에서 시작하기 전 확인할 것</h2>
+<p>OpenCode는 Orca의 지원 에이전트입니다. 다만 <strong>오케스트레이션은 실험 기능</strong>이며 Settings → Experimental에서 활성화하고 Orca runtime을 실행해야 합니다. 사내 OpenCode의 명령·플러그인 구성과 설치 버전에서 작업자 실행 및 완료 보고까지 확인한 뒤 사용합니다. <a class="source-link" href="https://www.onorca.dev/docs/agents/supported">지원 에이전트</a> · <a class="source-link" href="https://www.onorca.dev/docs/cli/orchestration">실행 전제</a></p>
+<pre><code>orca status --json
+orca skills get orca-cli
+orca skills get orchestration --full</code></pre>
+<p>위 명령은 상태와 설치 버전의 가이드를 조회합니다. 실제 명령 이름은 실행 환경에 따라 다를 수 있습니다. 모델 선택 같은 세부 옵션은 이 가이드를 따르고, 폐기된 <code>orca orchestration run</code> 예제는 사용하지 않습니다. <a class="source-link" href="https://www.onorca.dev/docs/cli/skills">버전에 맞는 가이드 불러오기</a></p>
+
+<details class="speaker-notes">
+  <summary>발표자 메모 · 3분 진행</summary>
+  <p>처음 1분은 관계도에서 사람·조정자·작업자를 짚습니다. 다음 1분에는 스킬이 사용 절차이고, worktree 분리와 작업의 의존성 관리가 각각 필요하다고 설명합니다. 마지막 1분에는 완료 보고를 받은 뒤 코드와 테스트를 확인해야 한다는 점을 말합니다. Run과 Dispatch의 구현 상세는 질문이 나올 때 보충합니다.</p>
+</details>
+</article>
+      <nav class="page-navigation" aria-label="이전과 다음 장"><a class="page-prev" href="worktree.html"><span>이전 장</span><strong>← Git worktree 이해</strong></a><a class="page-next" href="terminal.html"><span>다음 장</span><strong>터미널과 상태 추적 →</strong></a></nav>
+      <footer class="article-footer">Why Orca · 내가 Orca를 사용하는 이유<span>사내 LLM API + OpenCode 환경을 위한 팀 밋업 강의노트</span></footer>
+    </main>
+    <aside class="page-toc" aria-label="이 페이지에서">
+      <p class="nav-label">이 페이지에서</p>
+      <nav><ul class="toc-list"><li class="toc-level-2"><a href="#orchestration-overview">사람, 조정자, 작업자의 역할</a></li><li class="toc-level-2"><a href="#choose-the-skill">Orca 스킬은 도구를 쓰는 절차다</a></li><li class="toc-level-2"><a href="#coordinate-work">같이 시작할 일과 기다릴 일을 구분한다</a></li><li class="toc-level-2"><a href="#load-installed-guide">OpenCode에서 시작하기 전 확인할 것</a></li></ul></nav>
+    </aside>
+  </div>
+  <dialog id="search-dialog" aria-labelledby="search-title">
+    <div class="dialog-header"><h2 id="search-title">강의 검색</h2><button class="text-button" type="button" data-dialog-close>닫기 <kbd>Esc</kbd></button></div>
+    <label class="sr-only" for="search-input">검색어</label>
+    <input id="search-input" type="search" placeholder="예: worktree, 완료 조건, 스킬" autocomplete="off" spellcheck="false">
+    <p id="search-status" role="status" aria-live="polite">제목과 본문에서 검색합니다.</p>
+    <ul id="search-results"></ul>
+  </dialog>
+  <dialog id="menu-dialog" aria-labelledby="menu-title">
+    <div class="dialog-header"><h2 id="menu-title">강의 목차</h2><button class="text-button" type="button" data-dialog-close>닫기</button></div>
+    <nav><ol class="book-nav"><li><a href="index.html"><span class="nav-number"></span><span>강의 안내</span></a></li><li><a href="why-orca.html"><span class="nav-number">1</span><span>다섯 가지 사용 이유</span></a></li><li><a href="worktree.html"><span class="nav-number">2</span><span>Git worktree 이해</span></a></li><li><a href="orchestration.html" aria-current="page"><span class="nav-number">3</span><span>스킬과 오케스트레이션</span></a></li><li><a href="terminal.html"><span class="nav-number">4</span><span>터미널과 상태 추적</span></a></li><li><a href="review.html"><span class="nav-number">5</span><span>Diff 검토와 피드백</span></a></li><li><a href="recovery.html"><span class="nav-number">6</span><span>세션 복구와 이력</span></a></li><li><a href="browser.html"><span class="nav-number">7</span><span>브라우저와 Design Mode</span></a></li><li><a href="examples.html"><span class="nav-number">8</span><span>실사용 사례</span></a></li><li><a href="references.html"><span class="nav-number">9</span><span>정리와 팩트체크</span></a></li><li><a href="workflow.html"><span class="nav-number">10</span><span>부록 · 업무 적용</span></a></li></ol></nav>
+  </dialog>
+  <noscript><div class="noscript-note">검색과 테마 전환은 JavaScript를 사용합니다. 강의 본문과 목차 링크는 그대로 읽을 수 있습니다.</div></noscript>
+</body>
+</html>

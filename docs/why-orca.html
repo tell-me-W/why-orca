@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="사내 LLM API, OpenCode, Orca가 각각 맡는 역할부터 구분합니다.">
+  <meta name="color-scheme" content="light dark">
+  <title>OpenCode에 Orca를 더하는 이유 · Why Orca</title>
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem('orca-notes-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){document.documentElement.dataset.theme='light'}</script>
+  <link rel="stylesheet" href="assets/site.css">
+  <noscript><style>@media(max-width:760px){.book-sidebar{display:block;position:static;height:auto;padding:20px 0;border-bottom:1px solid var(--line)}.sidebar-foot{display:none}}</style></noscript>
+  <script src="assets/search-index.js" defer></script>
+  <script src="assets/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html" aria-label="Why Orca 강의노트 처음으로"><strong>Why Orca</strong><span>강의노트</span></a>
+      <div class="header-actions">
+        <button class="search-trigger" type="button" data-search-open hidden><span>강의 검색</span><kbd>Ctrl K</kbd></button>
+        <button class="text-button theme-toggle" type="button" aria-label="어두운 테마로 전환" hidden>어둡게</button>
+        <button class="text-button print-button" type="button" hidden>인쇄</button>
+        <button class="text-button mobile-menu-trigger" type="button" aria-haspopup="dialog" aria-controls="menu-dialog" hidden>목차</button>
+      </div>
+    </div>
+  </header>
+  <div class="book-layout">
+    <aside class="book-sidebar" aria-label="전체 강의 목차">
+      <p class="nav-label">강의 목차</p>
+      <nav><ol class="book-nav"><li><a href="index.html"><span class="nav-number"></span><span>강의 안내</span></a></li><li><a href="why-orca.html" aria-current="page"><span class="nav-number">1</span><span>다섯 가지 사용 이유</span></a></li><li><a href="worktree.html"><span class="nav-number">2</span><span>Git worktree 이해</span></a></li><li><a href="orchestration.html"><span class="nav-number">3</span><span>스킬과 오케스트레이션</span></a></li><li><a href="terminal.html"><span class="nav-number">4</span><span>터미널과 상태 추적</span></a></li><li><a href="review.html"><span class="nav-number">5</span><span>Diff 검토와 피드백</span></a></li><li><a href="recovery.html"><span class="nav-number">6</span><span>세션 복구와 이력</span></a></li><li><a href="browser.html"><span class="nav-number">7</span><span>브라우저와 Design Mode</span></a></li><li><a href="examples.html"><span class="nav-number">8</span><span>실사용 사례</span></a></li><li><a href="references.html"><span class="nav-number">9</span><span>정리와 팩트체크</span></a></li><li><a href="workflow.html"><span class="nav-number">10</span><span>부록 · 업무 적용</span></a></li></ol></nav>
+      <div class="sidebar-foot"><span>팀 밋업 · 20분</span><a href="references.html#official-sources">공식 참고 자료</a><a href="https://github.com/tell-me-W/why-orca">GitHub 저장소</a></div>
+    </aside>
+    <main id="main" tabindex="-1">
+      <header class="article-header">
+        <p class="chapter-label">도입</p>
+        <h1>OpenCode에 Orca를 더하는 이유</h1>
+        <p class="page-description">사내 LLM API, OpenCode, Orca가 각각 맡는 역할부터 구분합니다.</p>
+        <div class="article-meta"><span>0:00–1:00</span><span>수정 <time datetime="2026-10-29">2026-10-29</time></span></div>
+      </header>
+      <details class="inline-toc"><summary>이 페이지의 목차</summary><nav aria-label="본문 소목차"><ul class="toc-list"><li class="toc-level-2"><a href="#three-roles">우리 환경의 세 가지 역할</a></li><li class="toc-level-2"><a href="#five-reasons">내가 Orca를 사용하는 다섯 가지 이유</a></li></ul></nav></details>
+      <article class="article-content"><p>OpenCode에 일을 맡긴 뒤에도 작업 공간을 나누고, 실행 상황을 살피고, 변경을 검토하는 일은 남습니다. <strong>Orca를 사용하는 이유는 이 운영과 검토 과정을 한곳에서 이어가기 위해서입니다.</strong></p>
+
+<h2 id="three-roles">우리 환경의 세 가지 역할</h2>
+<figure class="diagram">
+  <div class="flow-diagram" aria-label="Orca에서 OpenCode를 실행하고, OpenCode가 설정된 사내 LLM API를 호출한다">
+    <div class="flow-step"><strong>Orca</strong><span>작업 공간 · 터미널 · 검토 화면</span></div><div class="flow-arrow" aria-hidden="true">→</div>
+    <div class="flow-step"><strong>OpenCode</strong><span>모델 호출 · 파일 수정 · 도구 실행</span></div><div class="flow-arrow" aria-hidden="true">→</div>
+    <div class="flow-step"><strong>사내 LLM API</strong><span>설정된 모델의 응답 제공</span></div>
+  </div>
+  <figcaption>강의에서 가정하는 연결 구조입니다. 사내 API 설정과 모델 호환은 OpenCode 환경에서 확인합니다.</figcaption>
+</figure>
+<p>Orca는 OpenCode를 지원하는 개발 환경입니다. OpenCode 쪽에서 provider와 모델을 설정하고, Orca는 그 에이전트를 실행하고 작업을 관리하는 화면을 제공합니다. 사내 API 연결 방법은 API 규격과 인증 방식에 따라 달라집니다. <a href="https://www.onorca.dev/docs/agents/supported">Orca 지원 에이전트</a>, <a href="https://opencode.ai/docs/providers/">OpenCode provider 설정</a></p>
+
+<h2 id="five-reasons">내가 Orca를 사용하는 다섯 가지 이유</h2>
+<div class="table-scroll"><table>
+  <caption>업무에서 필요한 일과 연결되는 기능</caption>
+  <thead><tr><th scope="col">필요한 일</th><th scope="col">사용하는 기능</th><th scope="col">이어서 읽기</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">여러 작업을 나눠 맡기기</th><td>Git worktree, 여러 에이전트 실행, 스킬 오케스트레이션</td><td><a href="worktree.html">작업 공간</a> · <a href="orchestration.html">작업 관계</a></td></tr>
+    <tr><th scope="row">내가 개입할 시점 찾기</th><td>터미널, 실행 상태, 알림과 Agents feed</td><td><a href="terminal.html">상태 추적</a></td></tr>
+    <tr><th scope="row">AI의 수정을 읽고 의견 주기</th><td>Diff viewer, Annotate AI Diff, 의견 일괄 전송</td><td><a href="review.html">검토와 피드백</a></td></tr>
+    <tr><th scope="row">중단했던 일로 돌아오기</th><td>작업 환경 복원, Restart, Session History와 Resume</td><td><a href="recovery.html">복구와 이력</a></td></tr>
+    <tr><th scope="row">UI를 보면서 수정 요청하기</th><td>내장 브라우저, Design Mode, 수정 결과 확인</td><td><a href="browser.html">화면 검증</a></td></tr>
+  </tbody>
+</table></div>
+<p>이 다섯 가지는 기능을 사용하는 이유입니다. 실제로 절약한 시간이나 사내 OpenCode의 멈춤 현상이 개선됐는지는 별도의 사용 기록이 있어야 판단할 수 있습니다. 이번 강의에서는 기능을 설명한 뒤 <a href="examples.html">실제 사례</a>로 그 효과를 확인합니다.</p>
+<details class="speaker-notes"><summary>발표자 메모 · 1분</summary><p>30초는 세 역할, 30초는 다섯 가지 이유에 씁니다. “모델에 작업을 맡긴 다음에도 관리할 일은 남습니다. 먼저 여러 에이전트가 같은 파일을 덮어쓰지 않도록 작업 공간부터 나눠 보겠습니다”로 worktree 장에 연결합니다.</p></details></article>
+      <nav class="page-navigation" aria-label="이전과 다음 장"><a class="page-prev" href="index.html"><span>이전 장</span><strong>← 강의 안내</strong></a><a class="page-next" href="worktree.html"><span>다음 장</span><strong>Git worktree 이해 →</strong></a></nav>
+      <footer class="article-footer">Why Orca · 내가 Orca를 사용하는 이유<span>사내 LLM API + OpenCode 환경을 위한 팀 밋업 강의노트</span></footer>
+    </main>
+    <aside class="page-toc" aria-label="이 페이지에서">
+      <p class="nav-label">이 페이지에서</p>
+      <nav><ul class="toc-list"><li class="toc-level-2"><a href="#three-roles">우리 환경의 세 가지 역할</a></li><li class="toc-level-2"><a href="#five-reasons">내가 Orca를 사용하는 다섯 가지 이유</a></li></ul></nav>
+    </aside>
+  </div>
+  <dialog id="search-dialog" aria-labelledby="search-title">
+    <div class="dialog-header"><h2 id="search-title">강의 검색</h2><button class="text-button" type="button" data-dialog-close>닫기 <kbd>Esc</kbd></button></div>
+    <label class="sr-only" for="search-input">검색어</label>
+    <input id="search-input" type="search" placeholder="예: worktree, 완료 조건, 스킬" autocomplete="off" spellcheck="false">
+    <p id="search-status" role="status" aria-live="polite">제목과 본문에서 검색합니다.</p>
+    <ul id="search-results"></ul>
+  </dialog>
+  <dialog id="menu-dialog" aria-labelledby="menu-title">
+    <div class="dialog-header"><h2 id="menu-title">강의 목차</h2><button class="text-button" type="button" data-dialog-close>닫기</button></div>
+    <nav><ol class="book-nav"><li><a href="index.html"><span class="nav-number"></span><span>강의 안내</span></a></li><li><a href="why-orca.html" aria-current="page"><span class="nav-number">1</span><span>다섯 가지 사용 이유</span></a></li><li><a href="worktree.html"><span class="nav-number">2</span><span>Git worktree 이해</span></a></li><li><a href="orchestration.html"><span class="nav-number">3</span><span>스킬과 오케스트레이션</span></a></li><li><a href="terminal.html"><span class="nav-number">4</span><span>터미널과 상태 추적</span></a></li><li><a href="review.html"><span class="nav-number">5</span><span>Diff 검토와 피드백</span></a></li><li><a href="recovery.html"><span class="nav-number">6</span><span>세션 복구와 이력</span></a></li><li><a href="browser.html"><span class="nav-number">7</span><span>브라우저와 Design Mode</span></a></li><li><a href="examples.html"><span class="nav-number">8</span><span>실사용 사례</span></a></li><li><a href="references.html"><span class="nav-number">9</span><span>정리와 팩트체크</span></a></li><li><a href="workflow.html"><span class="nav-number">10</span><span>부록 · 업무 적용</span></a></li></ol></nav>
+  </dialog>
+  <noscript><div class="noscript-note">검색과 테마 전환은 JavaScript를 사용합니다. 강의 본문과 목차 링크는 그대로 읽을 수 있습니다.</div></noscript>
+</body>
+</html>
